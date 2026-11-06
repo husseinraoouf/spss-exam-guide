@@ -1,0 +1,599 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>SPSS Exam Night</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a study notebook styled after the SPSS Output Viewer. A sticky menu bar of topics,
+   menu paths written as menu-bar crumbs, and results set as SPSS pivot tables. */
+:root{
+  --paper:#f5f6f8; --sheet:#ffffff; --ink:#1b2230; --muted:#5b6475; --line:#d9dde5;
+  --menu:#e9ecf2; --accent:#2f56b8; --accent-soft:#e3e9f8; --hl:#fff3b8; --hl-ink:#5a4600;
+  --good:#1f7a4d; --good-soft:#e1f2e8; --warn:#a4570a; --warn-soft:#fbecd9; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#12161e; --sheet:#1a1f2a; --ink:#e6e9f0; --muted:#9aa3b5; --line:#2d3444;
+  --menu:#222937; --accent:#8fa9ff; --accent-soft:#25304d; --hl:#4a3f12; --hl-ink:#ffe9a0;
+  --good:#6fd3a0; --good-soft:#173527; --warn:#f0b56a; --warn-soft:#3a2a14; --bad:#ff8f86; --bad-soft:#3d1c1a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#12161e; --sheet:#1a1f2a; --ink:#e6e9f0; --muted:#9aa3b5; --line:#2d3444;
+  --menu:#222937; --accent:#8fa9ff; --accent-soft:#25304d; --hl:#4a3f12; --hl-ink:#ffe9a0;
+  --good:#6fd3a0; --good-soft:#173527; --warn:#f0b56a; --warn-soft:#3a2a14; --bad:#ff8f86; --bad-soft:#3d1c1a; color-scheme:dark}
+
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{background:var(--paper);color:var(--ink);font:15px/1.6 var(--f-body);margin:0}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--menu)}
+.wrap{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h2{font-size:1.75rem;font-weight:700}
+h3{font-size:1.15rem;font-weight:600}
+p{margin:0;max-width:68ch}
+a{color:var(--accent)}
+code,.mono{font-family:var(--f-mono);font-size:.9em}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* menu bar */
+.menubar{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--menu);border-bottom:1px solid var(--line)}
+.menubar .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;padding-block:6px}
+.menubar a{flex:none;font:500 13px var(--f-body);color:var(--ink);text-decoration:none;padding:6px 10px;border-radius:4px;white-space:nowrap}
+.menubar a:hover,.menubar a.on{background:var(--accent);color:var(--sheet)}
+
+/* hero */
+header.hero{padding-block:40px 28px}
+.hero .eyebrow{font:600 12px var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:clamp(2.2rem,6vw,3.6rem);font-weight:700;margin-top:8px}
+.hero p.lede{margin-top:14px;font-size:1.05rem;color:var(--muted)}
+.scope{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:24px}
+.scope div{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:14px 16px;min-width:0}
+.scope b{display:block;font:600 12px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+
+section.topic{padding-block:36px;border-top:1px solid var(--line)}
+.topic > .wrap{display:grid;gap:18px}
+.tag{font:500 12px var(--f-mono);color:var(--muted)}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.cols > *{min-width:0}
+ul.tight{margin:0;padding-left:1.1em;display:grid;gap:4px}
+
+/* menu path crumb */
+.path{display:inline-flex;flex-wrap:wrap;align-items:center;gap:4px;font:500 13px var(--f-body);background:var(--menu);border:1px solid var(--line);border-radius:4px;padding:4px 8px}
+.path span+span::before{content:"▸";color:var(--muted);margin-right:4px}
+.recipe{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:16px;display:grid;gap:10px;min-width:0}
+.recipe h3{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.recipe ol{margin:0;padding-left:1.3em;display:grid;gap:4px}
+
+/* SPSS pivot table */
+.pivot-wrap{overflow-x:auto;max-width:100%}
+table.pivot{border-collapse:collapse;font-size:13.5px;background:var(--sheet);font-variant-numeric:tabular-nums;min-width:280px}
+table.pivot caption{caption-side:top;text-align:left;font:600 14px var(--f-body);padding:0 0 6px}
+table.pivot th,table.pivot td{border:1px solid var(--line);padding:4px 10px;text-align:right;white-space:nowrap}
+table.pivot thead th{background:var(--menu);font-weight:600;text-align:center}
+table.pivot tbody th{text-align:left;font-weight:500;background:var(--sheet)}
+table.pivot tr.total td,table.pivot tr.total th{font-weight:600}
+.note{font-size:13px;color:var(--muted)}
+
+/* callouts */
+.callout{border-radius:6px;padding:12px 14px;font-size:14px;display:grid;gap:4px}
+.callout.tip{background:var(--accent-soft)}
+.callout.warn{background:var(--warn-soft);color:var(--ink)}
+.callout.warn b{color:var(--warn)}
+.callout.err{background:var(--bad-soft)}
+.callout.err b{color:var(--bad)}
+mark{background:var(--hl);color:var(--hl-ink);padding:0 3px;border-radius:2px}
+
+/* formula */
+.formula{font-family:var(--f-mono);background:var(--sheet);border:1px solid var(--line);border-radius:4px;padding:8px 10px;overflow-x:auto;font-size:13.5px}
+
+/* calculator */
+.calc{background:var(--sheet);border:2px solid var(--accent);border-radius:8px;padding:18px;display:grid;gap:14px}
+.calc .row{display:flex;flex-wrap:wrap;gap:10px;align-items:end}
+.field{display:grid;gap:3px;min-width:0}
+.field label{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+input,select{font:15px var(--f-body);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:7px 9px;width:100%}
+input[type=number]{width:96px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:5px;overflow:hidden}
+.seg button{font:500 14px var(--f-body);border:0;background:var(--paper);color:var(--ink);padding:8px 14px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed=true]{background:var(--accent);color:var(--sheet)}
+.out{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;background:var(--paper);border-radius:6px;padding:12px 14px}
+.out .expr{font:500 15px var(--f-mono);overflow-wrap:anywhere;min-width:0}
+.out .ans{font:700 1.8rem var(--f-display);font-variant-numeric:tabular-nums;color:var(--accent)}
+.out small{display:block;font:12px var(--f-body);color:var(--muted)}
+.btn{font:500 13px var(--f-body);border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:4px;padding:6px 10px;cursor:pointer}
+.btn:hover{border-color:var(--accent)}
+.examples{display:flex;flex-wrap:wrap;gap:6px}
+
+/* phrase table */
+.phr td:first-child{text-align:left;white-space:normal}
+.phr td:nth-child(2),.phr td:nth-child(3){font-family:var(--f-mono);text-align:left}
+
+/* quiz */
+.q{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:14px 16px;display:grid;gap:8px}
+.q .opts{display:flex;flex-wrap:wrap;gap:6px}
+.q .opts button{font:500 13.5px var(--f-body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:6px 11px;cursor:pointer}
+.q .opts button.right{background:var(--good-soft);border-color:var(--good);color:var(--good)}
+.q .opts button.wrong{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.q .why{font-size:13.5px;color:var(--muted)}
+details.ans{background:var(--sheet);border:1px solid var(--line);border-radius:6px;padding:10px 14px}
+details.ans summary{cursor:pointer;font-weight:500}
+details.ans[open] summary{margin-bottom:8px}
+details.ans .body{display:grid;gap:8px}
+
+/* checklist */
+.check{display:grid;gap:6px}
+.check label{display:flex;gap:10px;align-items:flex-start;background:var(--sheet);border:1px solid var(--line);border-radius:5px;padding:9px 12px;cursor:pointer}
+.check input{width:auto;margin-top:4px;accent-color:var(--accent)}
+.check label:has(input:checked) span{color:var(--muted);text-decoration:line-through}
+.progress{font:500 13px var(--f-mono);color:var(--muted)}
+footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
+@media (max-width:520px){.out{grid-template-columns:1fr}.out .ans{font-size:1.5rem}}
+</style>
+
+<nav class="menubar" aria-label="Topics"><div class="wrap">
+  <a href="#scope">Exam</a><a href="#basics">Basics</a><a href="#describe">Descriptives</a><a href="#tables">Tables &amp; graphs</a><a href="#binomial">Binomial</a><a href="#continuous">Uniform &amp; normal</a><a href="#calc">Calculator</a><a href="#estimation">Estimation</a><a href="#practice">Practice</a><a href="#cheat">Cheat sheet</a>
+</div></nav>
+
+<header class="hero" id="scope"><div class="wrap">
+  <div class="eyebrow">26MBASTB · Statistics for Business · In-class test</div>
+  <h1>SPSS exam night</h1>
+  <p class="lede">Everything from the course's weeks 1–7 slides and homework, with the SPSS steps for each. All numbers for <code>company-sales.sav</code> were computed from the actual file on Moodle.</p>
+  <div class="scope">
+    <div><b>What it's worth</b>In-class test, 30% of the module. The final exam (70%) comes later.</div>
+    <div><b>Likely coverage</b>Weeks 1–6: basics, descriptives, tables &amp; graphs, binomial, uniform &amp; normal. Week 7 (confidence intervals) was posted too, so revise it as well.</div>
+    <div><b>Data files</b><code>company-sales.sav</code> (300 companies, 11 variables) and <code>Rating.sav</code> (10 ratings). Expect questions on these or similar files.</div>
+  </div>
+  <div class="callout warn" style="margin-top:14px"><b>About the "sample exam" PDF</b>The "Sample of Previous Exam Question" file on Moodle covers matrices and marginal cost from an older maths section. It doesn't match the SPSS content taught this term, so this guide doesn't cover it.</div>
+</div></header>
+
+<!-- BASICS -->
+<section class="topic" id="basics"><div class="wrap">
+  <div class="tag">Weeks 1 &amp; 4 · Introduction</div>
+  <h2>Statistics basics</h2>
+  <div class="cols">
+    <div class="recipe"><h3>Core definitions</h3>
+      <ul class="tight">
+        <li><b>Statistics:</b> collecting, organizing, analyzing and interpreting data to make decisions.</li>
+        <li><b>Population</b>: every outcome of interest. <b>Sample</b>: a subset of it.</li>
+        <li><b>Parameter</b> describes a <u>p</u>opulation (μ, σ, π). <b>Statistic</b> describes a <u>s</u>ample (x̄, s, p).</li>
+        <li><b>Descriptive</b> statistics organize, summarize and display data. <b>Inferential</b> statistics use a sample to draw conclusions about a population, using probability.</li>
+      </ul></div>
+    <div class="recipe"><h3>Types of variable</h3>
+      <ul class="tight">
+        <li><b>Qualitative (categorical):</b> a label, e.g. gender, sector, rating.</li>
+        <li><b>Quantitative:</b> a number. It is either <b>discrete</b> (you count it: family size, employees, branches) or <b>continuous</b> (you measure it: income, sales, age).</li>
+        <li><b>Nominal</b>: categories with no order (gender, location). <b>Ordinal</b>: ordered categories (Excellent / Good / Poor).</li>
+        <li><b>Interval</b>: equal steps, no true zero (temperature °C). <b>Ratio</b>: has a true zero (sales, income).</li>
+      </ul>
+      <p class="note">In SPSS Variable View, the <b>Measure</b> column is Nominal, Ordinal or Scale. Scale covers both interval and ratio.</p></div>
+    <div class="recipe"><h3>Sampling techniques</h3>
+      <ul class="tight">
+        <li><b>Simple random:</b> every member has an equal chance.</li>
+        <li><b>Stratified:</b> split into groups (strata), then sample from each group.</li>
+        <li><b>Cluster:</b> split into clusters, randomly pick whole clusters.</li>
+        <li><b>Systematic:</b> every k-th member after a random start.</li>
+        <li><b>Biased examples:</b> convenience sampling, voluntary response.</li>
+      </ul></div>
+  </div>
+  <h3>Quick check: classify the company-sales variables</h3>
+  <div class="cols" id="classify"></div>
+</div></section>
+
+<!-- DESCRIPTIVES -->
+<section class="topic" id="describe"><div class="wrap">
+  <div class="tag">Weeks 2–3 · Numerical measures</div>
+  <h2>Describing data with numbers</h2>
+  <div class="cols">
+    <div class="recipe"><h3>Central tendency</h3>
+      <div class="formula">x̄ = Σx / n &nbsp;&nbsp; μ = Σx / N</div>
+      <ul class="tight">
+        <li><b>Median:</b> sort the data and take the middle value (or the average of the two middle values).</li>
+        <li><b>Mode:</b> the most repeated value.</li>
+        <li><mark>With an outlier, report the median, not the mean.</mark> Outliers pull the mean.</li>
+      </ul>
+      <p class="note">Slide example: 81, 75, 66, 16, 90, 90 gives mean 69.67, median 78, mode 90. 16 is an outlier, so the median is the best measure.</p></div>
+    <div class="recipe"><h3>Dispersion</h3>
+      <div class="formula">Range = Max − Min<br>s² = Σ(x − x̄)² / (n − 1) &nbsp;&nbsp; σ² = Σ(x − μ)² / N<br>s = √s² &nbsp;&nbsp; IQR = Q3 − Q1</div>
+      <p class="note">Slide example: 81, 75, 66, 84, 96 gives range 30, s² = 493.2 / 4 = 123.3, s = 11.1, Q1 = 70.5, Q3 = 90, IQR = 19.5.</p>
+      <p class="note">SPSS always reports the <b>sample</b> versions (n − 1).</p></div>
+    <div class="recipe"><h3>Position &amp; box plot</h3>
+      <ul class="tight">
+        <li>Q1 = 25th percentile, Q2 = median, Q3 = 75th percentile.</li>
+        <li><b>Five-number summary:</b> Min, Q1, Median, Q3, Max.</li>
+        <li><b>Outlier rule:</b> below Q1 − 1.5·IQR or above Q3 + 1.5·IQR. SPSS marks these with ○, and extreme values (beyond 3·IQR) with ✱.</li>
+        <li><b>Shape:</b> a longer right whisker means right (positive) skew.</li>
+      </ul></div>
+  </div>
+  <div class="cols">
+    <div class="recipe"><h3>Get every measure at once <span class="tag">SPSS</span></h3>
+      <div class="path"><span>Analyze</span><span>Descriptive Statistics</span><span>Frequencies</span></div>
+      <ol><li>Move the scale variable (e.g. Sales) into the list.</li>
+        <li>Untick <b>Display frequency tables</b>, since a scale variable gives hundreds of rows.</li>
+        <li><b>Statistics…</b>: tick Quartiles, Mean, Median, Mode, Std. deviation, Variance, Range, Min, Max, Skewness.</li>
+        <li><b>Charts…</b>: Histogram (optionally with a normal curve).</li></ol></div>
+    <div class="recipe"><h3>Box plot + outliers <span class="tag">SPSS</span></h3>
+      <div class="path"><span>Analyze</span><span>Descriptive Statistics</span><span>Explore</span></div>
+      <ol><li>Put the variable in <b>Dependent List</b>. To compare groups, put e.g. Sector in <b>Factor List</b>.</li>
+        <li>Plots…: Boxplots "Factor levels together".</li>
+        <li>The output gives Descriptives (mean, 95% CI, median, variance, SD, IQR, skewness) and a box plot.</li></ol>
+      <p class="note">Alternative: <span class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Boxplot</span></span></p></div>
+  </div>
+  <div class="pivot-wrap"><table class="pivot">
+    <caption>Statistics: company-sales.sav (N = 300, computed from the file)</caption>
+    <thead><tr><th></th><th>Sales (000 £)</th><th>Avg age</th><th>Employees</th><th>Capital (000 £)</th><th>Manager age</th></tr></thead>
+    <tbody>
+      <tr><th>Mean</th><td>39.57</td><td>34.99</td><td>10.07</td><td>50.22</td><td>49.88</td></tr>
+      <tr><th>Median</th><td>39.11</td><td>35.41</td><td>9.00</td><td>48.51</td><td>49.94</td></tr>
+      <tr><th>Std. Deviation</th><td>9.32</td><td>5.29</td><td>4.76</td><td>20.95</td><td>2.67</td></tr>
+      <tr><th>Variance</th><td>86.92</td><td>27.99</td><td>22.61</td><td>438.97</td><td>7.11</td></tr>
+      <tr><th>Minimum</th><td>18.55</td><td>16.56</td><td>1</td><td>−7.09</td><td>41.16</td></tr>
+      <tr><th>Maximum</th><td>61.69</td><td>48.17</td><td>24</td><td>100.35</td><td>57.21</td></tr>
+      <tr><th>Range</th><td>43.14</td><td>31.61</td><td>23</td><td>107.44</td><td>16.05</td></tr>
+      <tr><th>Skewness</th><td>0.01</td><td>−0.45</td><td>0.84</td><td>0.00</td><td>−0.17</td></tr>
+    </tbody></table></div>
+  <div class="callout tip"><b>How to comment</b>"Average sales are about £39.6k with a standard deviation of £9.3k. The mean and median are almost equal and skewness ≈ 0, so the distribution is roughly symmetric." For Employees: "skewness 0.84 and mean above median, so it is right-skewed. The median (9) is the better centre."</div>
+  <div class="callout warn"><b>Odd values in the file</b>Capital has a negative minimum (−7.09) and Social Protection does too (−1.88). Both look like data errors. Mention them if you're asked to comment on the data.</div>
+</div></section>
+
+<!-- TABLES -->
+<section class="topic" id="tables"><div class="wrap">
+  <div class="tag">Week 4 · Frequency tables, distributions, graphs · Homework 1</div>
+  <h2>Tables and graphs</h2>
+  <div class="cols">
+    <div class="recipe"><h3>Qualitative variable → frequency table</h3>
+      <div class="path"><span>Analyze</span><span>Descriptive Statistics</span><span>Frequencies</span></div>
+      <p>Classes must be <b>mutually exclusive</b> (each observation fits in exactly one class) and <b>collectively exhaustive</b> (every observation has a class). Relative frequency = frequency ÷ total.</p></div>
+    <div class="recipe"><h3>Bar chart or pie chart</h3>
+      <div class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Bar</span><span>Simple</span><span>Define</span></div>
+      <div class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Pie</span><span>Define</span></div>
+      <ul class="tight"><li><b>Bar:</b> compares counts between classes. Works with many classes.</li>
+        <li><b>Pie:</b> compares percentages. Works with few classes and relative frequencies.</li></ul></div>
+    <div class="recipe"><h3>Quantitative → frequency distribution</h3>
+      <div class="path"><span>Transform</span><span>Visual Binning</span></div>
+      <ol><li>Choose the variable, then Continue.</li>
+        <li>Name the binned variable (e.g. <code>sales_cat</code>).</li>
+        <li><b>Make Cutpoints…</b>: Equal Width Intervals. First cutpoint just above the minimum. <mark>Number of cutpoints = classes − 1</mark>. Width is filled in.</li>
+        <li><b>Make Labels</b>, then OK.</li>
+        <li>Run Frequencies on the new variable.</li></ol></div>
+    <div class="recipe"><h3>Histogram</h3>
+      <div class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Histogram</span></div>
+      <ul class="tight"><li>Bars touch (continuous classes). Heights are class frequencies.</li>
+        <li>Shapes: <b>symmetric</b>; <b>right / positively skewed</b> (long tail to the right, mean &gt; median); <b>left / negatively skewed</b> (long tail to the left, mean &lt; median).</li>
+        <li>Weakness of both tables and histograms: <i>the identity of each observation is lost.</i></li></ul></div>
+  </div>
+
+  <div class="cols">
+    <div class="pivot-wrap"><table class="pivot">
+      <caption>Sector</caption>
+      <thead><tr><th></th><th>Frequency</th><th>Percent</th><th>Cumulative %</th></tr></thead>
+      <tbody><tr><th>It</th><td>62</td><td>20.7</td><td>20.7</td></tr>
+        <tr><th>Constructions</th><td>70</td><td>23.3</td><td>44.0</td></tr>
+        <tr><th>Agriculture</th><td>72</td><td>24.0</td><td>68.0</td></tr>
+        <tr><th>Others</th><td>96</td><td>32.0</td><td>100.0</td></tr>
+        <tr class="total"><th>Total</th><td>300</td><td>100.0</td><td></td></tr></tbody></table></div>
+    <div class="pivot-wrap"><table class="pivot">
+      <caption>Location (Homework 1, Q1)</caption>
+      <thead><tr><th></th><th>Frequency</th><th>Percent</th><th>Cumulative %</th></tr></thead>
+      <tbody><tr><th>Greater Cairo</th><td>162</td><td>54.0</td><td>54.0</td></tr>
+        <tr><th>Outside Cairo</th><td>138</td><td>46.0</td><td>100.0</td></tr>
+        <tr class="total"><th>Total</th><td>300</td><td>100.0</td><td></td></tr></tbody></table></div>
+  </div>
+  <div class="pivot-wrap"><table class="pivot">
+    <caption>Sales (binned): 4 cutpoints, first = 20, width 10.42 (the slide's own example)</caption>
+    <thead><tr><th>Class</th><th>Frequency</th><th>Percent</th><th>Cumulative %</th></tr></thead>
+    <tbody><tr><th>≤ 20.00</th><td>5</td><td>1.7</td><td>1.7</td></tr>
+      <tr><th>20.01 – 30.42</th><td>48</td><td>16.0</td><td>17.7</td></tr>
+      <tr><th>30.43 – 40.84</th><td>111</td><td>37.0</td><td>54.7</td></tr>
+      <tr><th>40.85 – 51.26</th><td>102</td><td>34.0</td><td>88.7</td></tr>
+      <tr><th>51.27+</th><td>34</td><td>11.3</td><td>100.0</td></tr>
+      <tr class="total"><th>Total</th><td>300</td><td>100.0</td><td></td></tr></tbody></table></div>
+  <div class="callout tip"><b>Model comments</b>Sector: "The fewest companies are in IT (≈21%) and the most are in Others (32%). The sectors are fairly evenly spread." Sales: "16% of companies have sales of £20.01k–30.42k. Most companies (71%) sell between £30.4k and £51.3k. The distribution is roughly symmetric."</div>
+  <div class="recipe"><h3>Which graph? <span class="tag">quick rule</span></h3>
+    <div class="pivot-wrap"><table class="pivot phr">
+      <thead><tr><th>Variable</th><th>Table</th><th>Graph</th></tr></thead>
+      <tbody><tr><td>Qualitative, many classes</td><td>Frequency table</td><td>Bar chart</td></tr>
+        <tr><td>Qualitative, few classes, show %</td><td>Relative frequency table</td><td>Pie chart</td></tr>
+        <tr><td>Quantitative (scale)</td><td>Frequency distribution (Visual Binning)</td><td>Histogram</td></tr>
+        <tr><td>Quantitative, spot outliers / compare groups</td><td>Explore</td><td>Box plot</td></tr></tbody></table></div></div>
+</div></section>
+
+<!-- BINOMIAL -->
+<section class="topic" id="binomial"><div class="wrap">
+  <div class="tag">Week 5 · Discrete probability distributions · Homework 2</div>
+  <h2>Binomial distribution</h2>
+  <div class="cols">
+    <div class="recipe"><h3>Probability distribution rules</h3>
+      <ul class="tight"><li>Every P(x) is between 0 and 1.</li><li>Outcomes are mutually exclusive.</li><li>The list is exhaustive, so ΣP(x) = 1.</li></ul>
+      <div class="formula">μ = E(X) = Σ x·P(x)<br>σ² = Σ (x − μ)²·P(x)</div>
+      <p class="note">Two coins: X = number of heads gives P(0) = ¼, P(1) = ½, P(2) = ¼.</p></div>
+    <div class="recipe"><h3>Is it binomial? All four must hold</h3>
+      <ol><li>A fixed, known number of trials <b>n</b>.</li><li>Only two outcomes: success or failure.</li><li>The same success probability <b>π</b> on every trial.</li><li>Trials are independent.</li></ol>
+      <div class="formula">μ = nπ &nbsp;&nbsp; σ² = nπ(1 − π) &nbsp;&nbsp; σ = √σ²</div></div>
+    <div class="recipe"><h3>Compute it in SPSS</h3>
+      <div class="path"><span>Transform</span><span>Compute Variable</span></div>
+      <ol><li>In Data View, type any number in row 1 of an empty column. Compute needs at least one case.</li>
+        <li>Target Variable: e.g. <code>p1</code>.</li>
+        <li>Numeric Expression: <code>PDF.BINOM(x, n, π)</code> for P(X = x), or <code>CDF.BINOM(x, n, π)</code> for P(X ≤ x).</li>
+        <li>In Variable View, set Decimals to 4, or the answer shows as .00.</li></ol></div>
+  </div>
+  <h3>Translate the wording</h3>
+  <div class="pivot-wrap"><table class="pivot phr">
+    <thead><tr><th>Question says</th><th>Means</th><th>SPSS expression</th></tr></thead>
+    <tbody>
+      <tr><td>exactly 3</td><td>P(X = 3)</td><td>PDF.BINOM(3,n,p)</td></tr>
+      <tr><td>at most 3 / 3 or less / no more than 3</td><td>P(X ≤ 3)</td><td>CDF.BINOM(3,n,p)</td></tr>
+      <tr><td>less than 3 / fewer than 3</td><td>P(X ≤ 2)</td><td>CDF.BINOM(2,n,p)</td></tr>
+      <tr><td>at least 3 / 3 or more</td><td>1 − P(X ≤ 2)</td><td>1 - CDF.BINOM(2,n,p)</td></tr>
+      <tr><td>more than 3</td><td>1 − P(X ≤ 3)</td><td>1 - CDF.BINOM(3,n,p)</td></tr>
+      <tr><td>none</td><td>P(X = 0)</td><td>PDF.BINOM(0,n,p)</td></tr>
+      <tr><td>all n</td><td>P(X = n)</td><td>PDF.BINOM(n,n,p)</td></tr>
+      <tr><td>between 2 and 5 (inclusive)</td><td>P(X ≤ 5) − P(X ≤ 1)</td><td>CDF.BINOM(5,n,p) - CDF.BINOM(1,n,p)</td></tr>
+    </tbody></table></div>
+  <div class="callout warn"><b>The classic trap</b>For a discrete variable, "less than" and "at most" are different. "At least k" is 1 − CDF of <b>k − 1</b>, not of k.</div>
+</div></section>
+
+<!-- CONTINUOUS -->
+<section class="topic" id="continuous"><div class="wrap">
+  <div class="tag">Week 6 · Continuous probability distributions · Homework 3</div>
+  <h2>Uniform and normal distributions</h2>
+  <div class="cols">
+    <div class="recipe"><h3>Uniform (a, b)</h3>
+      <ul class="tight"><li>Rectangular shape, fully described by its min <b>a</b> and max <b>b</b>. Area = 1.</li></ul>
+      <div class="formula">P(x) = 1/(b − a) for a ≤ x ≤ b<br>μ = (a + b)/2 &nbsp;&nbsp; σ = √((b − a)²/12)<br>P(X &lt; x) = (x − a)/(b − a)</div>
+      <p><code>CDF.UNIFORM(x, a, b)</code></p>
+      <p class="note">Bus wait U(0, 30): P(&lt;25) = .8333, P(&gt;25) = .1667, P(10–20) = .3333, μ = 15, σ² = 75, σ = 8.66.</p></div>
+    <div class="recipe"><h3>Normal (μ, σ)</h3>
+      <ul class="tight"><li>Bell-shaped, one peak, symmetric, total area = 1.</li><li>Asymptotic: the tails approach the x-axis but never touch it.</li><li>Fully described by μ and σ. Mean = median = mode.</li></ul>
+      <div class="formula">z = (x − μ)/σ</div>
+      <p><code>CDF.NORMAL(x, μ, σ)</code> gives P(X &lt; x). For the standard normal Z, use <code>CDF.NORMAL(z, 0, 1)</code>.</p></div>
+    <div class="recipe"><h3>Empirical rule</h3>
+      <div class="pivot-wrap"><table class="pivot"><thead><tr><th>Range</th><th>Area</th></tr></thead>
+        <tbody><tr><th>μ ± 1σ</th><td>≈ 68%</td></tr><tr><th>μ ± 2σ</th><td>≈ 95%</td></tr><tr><th>μ ± 3σ</th><td>≈ 99.7%</td></tr></tbody></table></div>
+      <p class="note">Battery life μ = 19, σ = 1.2: 68% fail between 17.8 and 20.2 hours, 95% between 16.6 and 21.4, and virtually all between 15.4 and 22.6.</p></div>
+  </div>
+  <div class="pivot-wrap"><table class="pivot phr">
+    <caption>Continuous wording (≤ and &lt; are the same here, since P(X = x) = 0)</caption>
+    <thead><tr><th>Question</th><th>Means</th><th>SPSS expression (normal)</th></tr></thead>
+    <tbody><tr><td>less than x</td><td>P(X &lt; x)</td><td>CDF.NORMAL(x,μ,σ)</td></tr>
+      <tr><td>more than x</td><td>1 − P(X &lt; x)</td><td>1 - CDF.NORMAL(x,μ,σ)</td></tr>
+      <tr><td>between a and b</td><td>P(X &lt; b) − P(X &lt; a)</td><td>CDF.NORMAL(b,μ,σ) - CDF.NORMAL(a,μ,σ)</td></tr>
+      <tr><td>what percent…</td><td>probability × 100</td><td>same, then ×100</td></tr></tbody></table></div>
+  <div class="callout err"><b>Three slide answers are wrong</b>Trust SPSS over the printed answers:
+    <span>Uber income £840–£1000: the slide says 0.9224. The correct answer is <b>0.4452</b>.</span>
+    <span>Commission above £42,000: the slide says 84%. The correct answer is <b>0.3446 (34%)</b>.</span>
+    <span>Commission below £35,000: the slide says 45%. The correct answer is <b>0.1587 (16%)</b>.</span></div>
+</div></section>
+
+<!-- CALCULATOR -->
+<section class="topic" id="calc"><div class="wrap">
+  <div class="tag">Practice tool</div>
+  <h2>Probability → SPSS expression</h2>
+  <p>Pick a distribution and a question. The tool shows what to type into <span class="path"><span>Transform</span><span>Compute Variable</span></span> and the value SPSS will give, so you can check your setup.</p>
+  <div class="calc">
+    <div class="seg" role="group" aria-label="Distribution">
+      <button type="button" id="d-binom" aria-pressed="true">Binomial</button><button type="button" id="d-normal" aria-pressed="false">Normal</button><button type="button" id="d-uniform" aria-pressed="false">Uniform</button>
+    </div>
+    <div class="row">
+      <div class="field"><label for="p1" id="l1">n (trials)</label><input type="number" id="p1" value="5" step="any"></div>
+      <div class="field"><label for="p2" id="l2">π (success)</label><input type="number" id="p2" value="0.2" step="any"></div>
+      <div class="field" style="flex:1;min-width:200px"><label for="qt">Question</label>
+        <select id="qt"></select></div>
+      <div class="field"><label for="x1">x</label><input type="number" id="x1" value="2" step="any"></div>
+      <div class="field" id="x2f" hidden><label for="x2">and</label><input type="number" id="x2" value="4" step="any"></div>
+    </div>
+    <div class="out" aria-live="polite">
+      <div><small>Numeric Expression</small><div class="expr" id="expr"></div><small id="meaning"></small></div>
+      <div><small>Result</small><div class="ans" id="ans"></div></div>
+    </div>
+    <div class="note" id="moments"></div>
+    <div class="examples"><span class="note">Load a course example:</span></div>
+  </div>
+</div></section>
+
+<!-- ESTIMATION -->
+<section class="topic" id="estimation"><div class="wrap">
+  <div class="tag">Week 7 · Estimation &amp; confidence intervals</div>
+  <h2>Estimation and confidence intervals</h2>
+  <div class="cols">
+    <div class="recipe"><h3>Ideas</h3>
+      <ul class="tight"><li>Statistics are known. Parameters are usually unknown, so we <b>infer</b> them.</li>
+        <li>Inference has two branches: <b>estimation</b> and <b>hypothesis testing</b>.</li>
+        <li><b>Point estimate:</b> one value. x̄ estimates μ, p estimates π, s estimates σ.</li>
+        <li><b>Confidence interval:</b> a range expected to contain the parameter at a stated confidence level. The significance level is α = 1 − confidence.</li>
+        <li><b>Margin of error</b> = (upper − lower) / 2.</li></ul></div>
+    <div class="recipe"><h3>What changes the width</h3>
+      <div class="pivot-wrap"><table class="pivot phr"><thead><tr><th>If you increase…</th><th>Error</th><th>Interval</th></tr></thead>
+        <tbody><tr><td>sample size n</td><td>smaller</td><td>narrower</td></tr>
+          <tr><td>confidence level</td><td>larger</td><td>wider</td></tr>
+          <tr><td>α</td><td>smaller</td><td>narrower</td></tr>
+          <tr><td>σ (spread)</td><td>larger</td><td>wider</td></tr></tbody></table></div>
+      <p class="note">Is a value "reasonable" for μ? Yes if it falls inside the interval, no if it falls outside.</p></div>
+    <div class="recipe"><h3>CI for a mean <span class="tag">SPSS</span></h3>
+      <div class="path"><span>Analyze</span><span>Descriptive Statistics</span><span>Explore</span></div>
+      <ol><li>Put the variable in Dependent List.</li><li>Statistics…: Descriptives, and set the confidence interval for the mean (95, 90 or 99).</li><li>Read <i>95% Confidence Interval for Mean: Lower / Upper Bound</i>.</li></ol>
+      <p class="note">Alternative: <span class="path"><span>Analyze</span><span>Compare Means</span><span>One-Sample T Test</span></span> with Test Value 0. Options… sets the CI %.</p></div>
+    <div class="recipe"><h3>CI for a proportion <span class="tag">SPSS</span></h3>
+      <div class="path"><span>Analyze</span><span>Descriptive Statistics</span><span>Frequencies</span><span>Bootstrap</span></div>
+      <ol><li>Tick <b>Perform bootstrapping</b> and set the confidence level.</li><li>The Frequencies table gains a bootstrap 95% CI column for each percentage.</li></ol>
+      <p class="note">Bootstrap results vary slightly from run to run.</p></div>
+  </div>
+  <div class="pivot-wrap"><table class="pivot">
+    <caption>company-sales.sav: confidence intervals for mean Sales (n = 300, x̄ = 39.566, SE = 0.538)</caption>
+    <thead><tr><th>Level</th><th>Lower</th><th>Upper</th><th>Margin of error</th></tr></thead>
+    <tbody><tr><th>90%</th><td>38.68</td><td>40.45</td><td>0.89</td></tr>
+      <tr><th>95%</th><td>38.51</td><td>40.63</td><td>1.06</td></tr>
+      <tr><th>99%</th><td>38.17</td><td>40.96</td><td>1.40</td></tr></tbody></table></div>
+  <div class="callout tip"><b>Model interpretation</b>"We are 95% confident that the true mean sales of all companies lies between £38.51k and £40.63k. The point estimate is £39.57k with a margin of error of £1.06k. At 99% the interval widens to £38.17k–£40.96k."
+    <span>Proportion in Greater Cairo: p = 162/300 = 0.54. 95% CI ≈ 0.484 to 0.596, error ≈ 0.056. Your bootstrap run will be close to this.</span></div>
+</div></section>
+
+<!-- PRACTICE -->
+<section class="topic" id="practice"><div class="wrap">
+  <div class="tag">Homework 1–3 and slide exercises, with answers</div>
+  <h2>Practice</h2>
+  <h3>Concept checks</h3>
+  <div class="cols" id="quiz"></div>
+  <h3>Worked answers</h3>
+  <div style="display:grid;gap:8px">
+    <details class="ans"><summary>Homework 1: company-sales location and average age</summary><div class="body">
+      <p><b>Q1–2.</b> Location: Greater Cairo 162 (54%), Outside Cairo 138 (46%). Two classes and a % comparison, so a <b>pie chart</b> fits (a bar chart is also acceptable). Comment: "Slightly more companies are in Greater Cairo (54%) than outside it (46%). The split is fairly balanced."</p>
+      <p><b>Q3.</b> Average age is continuous (16.6 to 48.2), so use Visual Binning. With cutpoints at 20, 25, 30, 35, 40, 45:</p>
+      <div class="pivot-wrap"><table class="pivot"><thead><tr><th>Avg age</th><th>Freq</th><th>%</th></tr></thead><tbody>
+        <tr><th>≤ 20</th><td>4</td><td>1.3</td></tr><tr><th>20.01–25</th><td>6</td><td>2.0</td></tr><tr><th>25.01–30</th><td>29</td><td>9.7</td></tr><tr><th>30.01–35</th><td>106</td><td>35.3</td></tr><tr><th>35.01–40</th><td>107</td><td>35.7</td></tr><tr><th>40.01–45</th><td>40</td><td>13.3</td></tr><tr><th>45+</th><td>8</td><td>2.7</td></tr></tbody></table></div>
+      <p>About 71% of companies have an average age between 30 and 40.</p>
+      <p><b>Q4.</b> Histogram. "The ages centre around 35 (mean 34.99, median 35.41). There is a slightly longer tail to the left (skewness −0.45), so the distribution is slightly negatively skewed."</p></div></details>
+    <details class="ans"><summary>Binomial slide examples (flights, coins, investors, loans, TVs)</summary><div class="body">
+      <p><b>Flights</b> n = 5, π = .2: P(0) = .3277, P(1) = .4096, P(≤3) = .9933, P(≥2) = 1 − CDF(1) = <b>.2627</b>. μ = 1, σ² = .8.</p>
+      <p><b>Coins</b> n = 5, π = .5: P(0) = .0312, P(1) = .1562, P(2) = .3125, P(≤2) = .5, P(≥1) = <b>.9688</b>. μ = 2.5, σ² = 1.25.</p>
+      <p><b>Investors</b> n = 9, π = .3: P(2) = .2668, P(4) = .1715, P(0) = .0404, P(≤5) = .9747, P(≥4) = .2703.</p>
+      <p><b>Loans</b> n = 40, π = .025: P(0) = .3632, P(2) = .1863, P(3) = .0605, P(≥3) = .0779.</p>
+      <p><b>TVs</b> n = 9, π = .9: P(9) = .3874, P(&lt;5) = .0009, P(&gt;5) = .9917, P(≥7) = .9470.</p></div></details>
+    <details class="ans"><summary>Homework 2: TVs, n = 15, π = 0.9</summary><div class="body">
+      <div class="pivot-wrap"><table class="pivot phr"><thead><tr><th>Question</th><th>SPSS</th><th>Answer</th></tr></thead><tbody>
+        <tr><td>[1] All 15</td><td>PDF.BINOM(15,15,0.9)</td><td>.2059</td></tr>
+        <tr><td>[2] Less than 5</td><td>CDF.BINOM(4,15,0.9)</td><td>≈ .0000</td></tr>
+        <tr><td>[3] At least 5</td><td>1 - CDF.BINOM(4,15,0.9)</td><td>≈ 1.0000</td></tr>
+        <tr><td>[4] More than 5</td><td>1 - CDF.BINOM(5,15,0.9)</td><td>≈ 1.0000</td></tr>
+        <tr><td>[5] At most 5</td><td>CDF.BINOM(5,15,0.9)</td><td>≈ .0000</td></tr>
+        <tr><td>[6] At least 7</td><td>1 - CDF.BINOM(6,15,0.9)</td><td>≈ 1.0000</td></tr>
+        <tr><td>[7] Mean</td><td>nπ</td><td>13.5</td></tr>
+        <tr><td>[8] Variance / SD</td><td>nπ(1−π)</td><td>1.35 / 1.162</td></tr></tbody></table></div>
+      <p class="note">The "≈ 0" answers are real. With π = .9, getting 5 or fewer out of 15 is almost impossible. Write them with 4 decimals.</p></div></details>
+    <details class="ans"><summary>Homework 3: uniform and normal</summary><div class="body">
+      <p><b>[1] U(30, 120)</b>: (a) at least 60: 1 − CDF.UNIFORM(60,30,120) = <b>.6667</b>. (b) more than 90 = <b>.3333</b>. (c) 90–110 = <b>.2222</b>. (d) 30–100 = <b>.7778</b>. (μ = 75, σ = 25.98)</p>
+      <p><b>[2] N(80, 10)</b>: (a) 75–90 = <b>.5328</b>. (b) ≤ 75 = <b>.3085</b>. (c) 55–70 = <b>.1524</b>.</p>
+      <p><b>[3] N(2878, 520)</b>: (a) &lt; 3000 = <b>59.27%</b>. (b) &gt; 3500 = <b>11.58%</b>. (c) 3500–4000 = <b>10.03%</b>. (d) 2000–4000 = <b>93.89%</b>.</p></div></details>
+    <details class="ans"><summary>Normal &amp; uniform slide examples</summary><div class="body">
+      <p><b>Z</b>: P(0&lt;Z&lt;1.96) = .4750; P(−2.33&lt;Z&lt;0) = .4901; P(Z&lt;1.96) = .9750; P(Z&gt;1) = .1587; P(−1&lt;Z&lt;1) = .6827.</p>
+      <p><b>N(10, 2)</b>: P(10–12) = .3413; P(8–12) = .6827; P(&gt;14) = .0228; P(&lt;14) = .9772.</p>
+      <p><b>Uber N(1000, 100)</b>: &lt;1100 = .8413; &gt;790 = .9821; 840–1000 = .4452; 1150–1250 = .0606.</p>
+      <p><b>Commission N(40000, 5000)</b>: &gt;42000 = 34.46%; 32000–42000 = 60.06%; &lt;35000 = 15.87%.</p>
+      <p><b>U(6, 10)</b>: μ = 8, σ = 1.1547; P(&gt;7) = .75; P(7–9) = .5.</p></div></details>
+  </div>
+</div></section>
+
+<!-- CHEAT -->
+<section class="topic" id="cheat"><div class="wrap">
+  <div class="tag">One table to glance at before you go in</div>
+  <h2>Cheat sheet</h2>
+  <div class="pivot-wrap"><table class="pivot phr">
+    <thead><tr><th>If asked to…</th><th>Menu</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td>Frequency table (qualitative)</td><td>Analyze ▸ Descriptive Statistics ▸ Frequencies</td><td>Comment on largest and smallest class, in %</td></tr>
+      <tr><td>Mean, median, SD, quartiles…</td><td>Frequencies ▸ Statistics…</td><td>Untick "Display frequency tables"</td></tr>
+      <tr><td>Box plot, outliers, compare groups</td><td>Analyze ▸ Descriptive Statistics ▸ Explore</td><td>Factor List = group variable</td></tr>
+      <tr><td>Bar / pie chart</td><td>Graphs ▸ Legacy Dialogs ▸ Bar / Pie</td><td>Bar for counts, pie for %</td></tr>
+      <tr><td>Frequency distribution (scale)</td><td>Transform ▸ Visual Binning</td><td>Cutpoints = classes − 1</td></tr>
+      <tr><td>Histogram</td><td>Graphs ▸ Legacy Dialogs ▸ Histogram</td><td>Comment on shape and skew</td></tr>
+      <tr><td>Binomial / normal / uniform probability</td><td>Transform ▸ Compute Variable</td><td>PDF.BINOM, CDF.BINOM, CDF.NORMAL, CDF.UNIFORM. Needs 1 row of data. Set Decimals to 4</td></tr>
+      <tr><td>CI for a mean</td><td>Analyze ▸ Descriptive Statistics ▸ Explore</td><td>Statistics… sets the CI %</td></tr>
+      <tr><td>CI for a proportion</td><td>Frequencies ▸ Bootstrap</td><td>Tick Perform bootstrapping</td></tr>
+    </tbody></table></div>
+  <h3>Before the exam</h3>
+  <div class="check" id="checklist"></div>
+  <div class="progress" id="prog"></div>
+</div></section>
+
+<footer><div class="wrap">Built from the 25 PDFs and 2 data files on the Statistics for Business Moodle page. Probabilities and data summaries were computed independently, and they match the slides except for the three noted errors. SPSS output can differ in the last decimal.</div></footer>
+
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  let store={};try{store=JSON.parse(localStorage.getItem('spss-guide')||'{}')}catch(e){}
+  const save=()=>{try{localStorage.setItem('spss-guide',JSON.stringify(store))}catch(e){}};
+
+  /* classify quiz */
+  const vars=[["SALES (Total sales, £000)","Quantitative · continuous · ratio","q"],["EMPLOYEE (Number of employees)","Quantitative · discrete · ratio","q"],["SECTOR (It / Constructions / …)","Qualitative · nominal","c"],["LOCATION (Cairo / Outside)","Qualitative · nominal","c"],["RATING (Excellent / Good / Poor)","Qualitative · ordinal","c"],["BRANCHES (1, 2, 3)","Quantitative · discrete · ratio","q"]];
+  const cl=$('classify');
+  vars.forEach(([v,ans,t])=>{const d=document.createElement('div');d.className='q';
+    d.innerHTML=`<b>${v}</b><div class="opts"><button type="button" data-k="c">Qualitative</button><button type="button" data-k="q">Quantitative</button></div><div class="why" hidden>${ans}</div>`;
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{d.querySelectorAll('button').forEach(x=>x.className='');b.className=b.dataset.k===t?'right':'wrong';d.querySelector('.why').hidden=false});
+    cl.appendChild(d)});
+
+  /* concept quiz */
+  const qs=[
+    ["Data have an outlier. Which centre do you report?",["Mean","Median","Mode"],1,"The median isn't pulled by extreme values."],
+    ["\"At least 4 out of 9\" in SPSS is…",["1 - CDF.BINOM(4,9,p)","1 - CDF.BINOM(3,9,p)","CDF.BINOM(4,9,p)"],1,"At least 4 = 1 − P(X ≤ 3)."],
+    ["A histogram has a long tail to the right. Which is true?",["Mean > median","Mean < median","Mean = median"],0,"Right (positive) skew pulls the mean up."],
+    ["Raising the confidence level from 95% to 99% makes the interval…",["Narrower","Wider","Unchanged"],1,"More confidence needs a wider net."],
+    ["Store rating Excellent/Good/Poor is measured at which level?",["Nominal","Ordinal","Ratio"],1,"Categories with a natural order are ordinal."],
+    ["Graph for a 2-category variable shown as percentages?",["Histogram","Pie chart","Box plot"],1,"Pie: few classes, relative frequencies."],
+    ["x̄ is a…",["Parameter","Statistic"],1,"A sample measure is a statistic. μ is the parameter."],
+    ["For a normal variable, P(X ≤ 5) vs P(X < 5)?",["Equal","≤ is bigger","< is bigger"],0,"For a continuous variable, P(X = 5) = 0."]];
+  const qz=$('quiz');
+  qs.forEach(([q,o,r,w])=>{const d=document.createElement('div');d.className='q';
+    d.innerHTML=`<b>${q}</b><div class="opts">${o.map((x,i)=>`<button type="button" data-i="${i}">${x}</button>`).join('')}</div><div class="why" hidden>${w}</div>`;
+    d.querySelectorAll('button').forEach(b=>b.onclick=()=>{d.querySelectorAll('button').forEach(x=>x.className='');b.className=+b.dataset.i===r?'right':'wrong';if(+b.dataset.i!==r)d.querySelectorAll('button')[r].className='right';d.querySelector('.why').hidden=false});
+    qz.appendChild(d)});
+
+  /* math */
+  function lnC(n,k){return lg(n+1)-lg(k+1)-lg(n-k+1)}
+  function lg(z){const c=[676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];if(z<0.5)return Math.log(Math.PI/Math.sin(Math.PI*z))-lg(1-z);z-=1;let x=0.99999999999980993;for(let i=0;i<8;i++)x+=c[i]/(z+i+1);const t=z+7.5;return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x)}
+  const bpdf=(k,n,p)=>{if(k<0||k>n||k!==Math.floor(k))return 0;if(p===0)return k===0?1:0;if(p===1)return k===n?1:0;return Math.exp(lnC(n,k)+k*Math.log(p)+(n-k)*Math.log(1-p))};
+  const bcdf=(k,n,p)=>{k=Math.floor(k);let s=0;for(let i=0;i<=Math.min(k,n);i++)s+=bpdf(i,n,p);return Math.min(1,s)};
+  function erf(x){const s=Math.sign(x);x=Math.abs(x);let sum=0,term=x,n=0;if(x<3){while(Math.abs(term)>1e-16&&n<200){sum+=term/(2*n+1);n++;term*=-x*x/n}return s*2/Math.sqrt(Math.PI)*sum}
+    let f=0;for(let k=60;k>=1;k--)f=k/2/(x+f);return s*(1-Math.exp(-x*x)/Math.sqrt(Math.PI)/(x+f))}
+  const ncdf=(x,m,s)=>0.5*(1+erf((x-m)/(s*Math.SQRT2)));
+  const ucdf=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
+
+  /* calculator */
+  let dist='binom';
+  const Q={binom:[["eq","exactly x"],["le","at most x (≤)"],["lt","less than x (<)"],["ge","at least x (≥)"],["gt","more than x (>)"],["bt","between x and y (inclusive)"]],
+           cont:[["lt","less than x"],["gt","more than x"],["bt","between x and y"]]};
+  const labels={binom:["n (trials)","π (success)"],normal:["μ (mean)","σ (std. dev.)"],uniform:["a (min)","b (max)"]};
+  function setDist(d,keep){dist=d;['binom','normal','uniform'].forEach(k=>$('d-'+k).setAttribute('aria-pressed',k===d));
+    $('l1').textContent=labels[d][0];$('l2').textContent=labels[d][1];
+    const cur=$('qt').value;$('qt').innerHTML=(d==='binom'?Q.binom:Q.cont).map(([v,t])=>`<option value="${v}">${t}</option>`).join('');
+    if(keep&&[...$('qt').options].some(o=>o.value===keep))$('qt').value=keep;else if([...$('qt').options].some(o=>o.value===cur))$('qt').value=cur;
+    run()}
+  const f=v=>{const r=Math.round(v*1e4)/1e4;return r===0&&v>0?'≈ 0.0000':(1-r===0&&v<1?'≈ 1.0000':r.toFixed(4))};
+  const num=v=>String(+v);
+  function run(){
+    const a=+$('p1').value,b=+$('p2').value,x=+$('x1').value,y=+$('x2').value,q=$('qt').value;
+    $('x2f').hidden=q!=='bt';let e='',m='',v=NaN,mo='';
+    if(dist==='binom'){
+      const n=Math.round(a),p=b,F=k=>`CDF.BINOM(${k},${n},${num(p)})`;
+      if(!(n>0)||!(p>=0&&p<=1)){out('Enter n ≥ 1 and π between 0 and 1','', '—','');return}
+      ({eq:()=>{e=`PDF.BINOM(${x},${n},${num(p)})`;m=`P(X = ${x})`;v=bpdf(x,n,p)},
+        le:()=>{e=F(x);m=`P(X ≤ ${x})`;v=bcdf(x,n,p)},
+        lt:()=>{e=F(x-1);m=`P(X < ${x}) = P(X ≤ ${x-1})`;v=bcdf(x-1,n,p)},
+        ge:()=>{e=`1 - ${F(x-1)}`;m=`P(X ≥ ${x}) = 1 − P(X ≤ ${x-1})`;v=1-bcdf(x-1,n,p)},
+        gt:()=>{e=`1 - ${F(x)}`;m=`P(X > ${x}) = 1 − P(X ≤ ${x})`;v=1-bcdf(x,n,p)},
+        bt:()=>{e=`${F(y)} - ${F(x-1)}`;m=`P(${x} ≤ X ≤ ${y})`;v=bcdf(y,n,p)-bcdf(x-1,n,p)}})[q]();
+      mo=`μ = nπ = ${f(n*p).replace('≈ ','')} · σ² = nπ(1−π) = ${f(n*p*(1-p)).replace('≈ ','')} · σ = ${f(Math.sqrt(n*p*(1-p))).replace('≈ ','')}`;
+    } else {
+      const nm=dist==='normal'?'NORMAL':'UNIFORM',F=k=>`CDF.${nm}(${k},${num(a)},${num(b)})`,C=k=>dist==='normal'?ncdf(k,a,b):ucdf(k,a,b);
+      if(dist==='normal'&&!(b>0)){out('σ must be positive','','—','');return}
+      if(dist==='uniform'&&!(b>a)){out('b must be larger than a','','—','');return}
+      ({lt:()=>{e=F(x);m=`P(X < ${x})`;v=C(x)},gt:()=>{e=`1 - ${F(x)}`;m=`P(X > ${x})`;v=1-C(x)},
+        bt:()=>{e=`${F(y)} - ${F(x)}`;m=`P(${x} < X < ${y})`;v=C(y)-C(x)}})[q]();
+      mo=dist==='normal'?`z for x = ${x}: (${x} − ${num(a)}) / ${num(b)} = ${((x-a)/b).toFixed(2)}`:`μ = (a+b)/2 = ${(a+b)/2} · σ² = (b−a)²/12 = ${((b-a)**2/12).toFixed(4)} · σ = ${Math.sqrt((b-a)**2/12).toFixed(4)}`;
+    }
+    out(e,m,f(v),mo)}
+  function out(e,m,v,mo){$('expr').textContent=e;$('meaning').textContent=m;$('ans').textContent=v;$('moments').textContent=mo}
+  ['binom','normal','uniform'].forEach(k=>$('d-'+k).onclick=()=>setDist(k));
+  ['p1','p2','x1','x2','qt'].forEach(id=>$(id).addEventListener('input',run));
+  const ex=[["Flights: at least 2 late","binom",5,.2,"ge",2],["Investors: exactly 2","binom",9,.3,"eq",2],["HW2: all 15 TVs","binom",15,.9,"eq",15],["Uber: £1150–1250","normal",1000,100,"bt",1150,1250],["IRS: more than $3500","normal",2878,520,"gt",3500],["HW3: wait ≥ 60 min","uniform",30,120,"gt",60]];
+  const exBox=document.querySelector('.examples');
+  ex.forEach(([t,d,a,b,q,x,y])=>{const bt=document.createElement('button');bt.type='button';bt.className='btn';bt.textContent=t;
+    bt.onclick=()=>{$('p1').value=a;$('p2').value=b;$('x1').value=x;if(y!=null)$('x2').value=y;setDist(d,q)};exBox.appendChild(bt)});
+  setDist('binom','ge');
+
+  /* checklist */
+  const items=["Open company-sales.sav and check Variable View: names, labels, Measure column","Run Frequencies on Sector and Location, and write a 2-line comment for each","Make a bar chart and a pie chart from Legacy Dialogs","Bin Sales with Visual Binning (4 cutpoints, first = 20) and get 16% in 20.01–30.42","Draw a histogram and describe its shape","Run Explore on Sales by Sector and read the box plot","Use Compute Variable for PDF.BINOM, CDF.BINOM, CDF.NORMAL and CDF.UNIFORM (type a value in row 1 first)","Run a 95% CI for mean Sales (38.51 to 40.63)","Know the formulas: s², σ for uniform, nπ, nπ(1−π), z","Pack: laptop charged with charger, pens, pencils, ruler, calculator"];
+  const cb=$('checklist');store.c=store.c||{};
+  const prog=()=>{$('prog').textContent=`${Object.values(store.c).filter(Boolean).length} of ${items.length} done`};
+  items.forEach((t,i)=>{const l=document.createElement('label');l.innerHTML=`<input type="checkbox" id="ck${i}"><span>${t}</span>`;const c=l.querySelector('input');c.checked=!!store.c[i];c.onchange=()=>{store.c[i]=c.checked;save();prog()};cb.appendChild(l)});
+  prog();
+
+  /* active menu item */
+  const links=[...document.querySelectorAll('.menubar a')];
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)links.forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id))}),{rootMargin:'-40% 0px -55% 0px'});
+  document.querySelectorAll('header.hero,section.topic').forEach(s=>io.observe(s));
+})();
+</script>
+</html>
