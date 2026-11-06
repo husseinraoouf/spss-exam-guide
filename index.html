@@ -10,6 +10,7 @@
   --paper:#f5f6f8; --sheet:#ffffff; --ink:#1b2230; --muted:#5b6475; --line:#d9dde5;
   --menu:#e9ecf2; --accent:#2f56b8; --accent-soft:#e3e9f8; --hl:#fff3b8; --hl-ink:#5a4600;
   --good:#1f7a4d; --good-soft:#e1f2e8; --warn:#a4570a; --warn-soft:#fbecd9; --bad:#b3261e; --bad-soft:#fbe3e1;
+  --c1:#2f56b8; --c2:#cf7a22; --c3:#23906f; --c4:#b03f74; --c5:#7259c4; --c6:#7d8424;
   --f-display:"IBM Plex Sans Condensed","Arial Narrow",system-ui,sans-serif;
   --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --f-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
@@ -17,13 +18,16 @@
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --paper:#12161e; --sheet:#1a1f2a; --ink:#e6e9f0; --muted:#9aa3b5; --line:#2d3444;
   --menu:#222937; --accent:#8fa9ff; --accent-soft:#25304d; --hl:#4a3f12; --hl-ink:#ffe9a0;
-  --good:#6fd3a0; --good-soft:#173527; --warn:#f0b56a; --warn-soft:#3a2a14; --bad:#ff8f86; --bad-soft:#3d1c1a; color-scheme:dark}}
+  --good:#6fd3a0; --good-soft:#173527; --warn:#f0b56a; --warn-soft:#3a2a14; --bad:#ff8f86; --bad-soft:#3d1c1a;
+  --c1:#8fa9ff; --c2:#f0aa5c; --c3:#5fd0ad; --c4:#ef86b6; --c5:#b3a1ff; --c6:#c9cf6a; color-scheme:dark}}
 :root[data-theme="dark"]{
   --paper:#12161e; --sheet:#1a1f2a; --ink:#e6e9f0; --muted:#9aa3b5; --line:#2d3444;
   --menu:#222937; --accent:#8fa9ff; --accent-soft:#25304d; --hl:#4a3f12; --hl-ink:#ffe9a0;
-  --good:#6fd3a0; --good-soft:#173527; --warn:#f0b56a; --warn-soft:#3a2a14; --bad:#ff8f86; --bad-soft:#3d1c1a; color-scheme:dark}
+  --good:#6fd3a0; --good-soft:#173527; --warn:#f0b56a; --warn-soft:#3a2a14; --bad:#ff8f86; --bad-soft:#3d1c1a;
+  --c1:#8fa9ff; --c2:#f0aa5c; --c3:#5fd0ad; --c4:#ef86b6; --c5:#b3a1ff; --c6:#c9cf6a; color-scheme:dark}
 
 *{box-sizing:border-box}
+input[type=checkbox],input[type=radio]{width:auto;accent-color:var(--accent)}
 [hidden]{display:none!important}
 html{scroll-behavior:smooth;scroll-padding-top:64px}
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -132,16 +136,126 @@ details.ans .body{display:grid;gap:8px}
 .progress{font:500 13px var(--f-mono);color:var(--muted)}
 footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px solid var(--line)}
 @media (max-width:520px){.out{grid-template-columns:1fr}.out .ans{font-size:1.5rem}}
+
+/* ---------- SPSS lab ---------- */
+.try{font:500 13px var(--f-body);justify-self:start;background:var(--sheet);border:1px solid var(--accent);color:var(--accent);border-radius:4px;padding:5px 10px;cursor:pointer}
+.try:hover{background:var(--accent);color:var(--sheet)}
+.hero .try{margin-top:16px;font-size:14px;padding:8px 14px}
+.ex-list{display:flex;flex-wrap:wrap;gap:6px}
+.ex-chip{font:500 13px var(--f-body);display:inline-flex;gap:6px;align-items:center;border:1px solid var(--line);background:var(--sheet);color:var(--ink);border-radius:4px;padding:5px 9px;cursor:pointer;text-align:left}
+.ex-chip .num{font:600 12px var(--f-mono);color:var(--muted);min-width:1.4em}
+.ex-chip.done{border-color:var(--good)}
+.ex-chip.done .num{color:var(--good)}
+.ex-chip[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:var(--sheet)}
+.ex-chip[aria-pressed=true] .num{color:var(--sheet)}
+.ex-prog{font:500 13px var(--f-mono);color:var(--muted)}
+.task{background:var(--sheet);border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.task-h{background:var(--accent-soft);padding:10px 14px;display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:space-between;align-items:baseline}
+.task-h b{font:600 1.05rem var(--f-display)}
+.task-b{padding:14px;display:grid;gap:12px}
+.task details summary{cursor:pointer;color:var(--accent);font-size:14px}
+.task details p{margin-top:6px;font-size:14px}
+.status{font:500 13px var(--f-body);display:inline-flex;flex-wrap:wrap;gap:8px;align-items:center;padding:4px 10px;border-radius:999px;background:var(--warn-soft);color:var(--warn);justify-self:start}
+.status.ok{background:var(--good-soft);color:var(--good)}
+.status .btn{padding:2px 8px;font-size:12px}
+.answer{display:grid;gap:8px}
+.answer .row2{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.answer input{width:150px}
+.answer .opts{display:flex;flex-wrap:wrap;gap:6px}
+.answer .opts button{font:500 13.5px var(--f-body);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:4px;padding:6px 11px;cursor:pointer;text-align:left}
+.fb{font-size:14px}
+.fb.ok{color:var(--good)} .fb.no{color:var(--bad)}
+.task-nav{display:flex;gap:8px;justify-content:space-between}
+
+.spss{border:1px solid var(--line);border-radius:6px;background:var(--sheet);box-shadow:0 1px 3px rgb(0 0 0 / .08);min-width:0}
+.spss-title{background:var(--menu);font:500 12.5px var(--f-body);padding:6px 12px;color:var(--muted);border-bottom:1px solid var(--line);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;border-radius:6px 6px 0 0}
+.spss-menus{display:flex;flex-wrap:wrap;gap:2px;padding:4px 6px;border-bottom:1px solid var(--line)}
+.spss-menus > div{position:relative}
+.mbtn{font:500 14px var(--f-body);background:none;border:0;color:var(--ink);padding:6px 11px;border-radius:4px;cursor:pointer}
+.mbtn[aria-expanded=true],.mbtn:hover{background:var(--accent-soft)}
+.mdrop{position:absolute;top:calc(100% + 2px);left:0;z-index:6;background:var(--sheet);border:1px solid var(--line);border-radius:5px;box-shadow:0 8px 24px rgb(0 0 0 / .2);width:max-content;min-width:200px;max-width:min(280px,calc(100vw - 40px));padding:4px;display:grid}
+.spss-menus > div.r .mdrop{left:auto;right:0}
+.mdrop .grp{font:600 11px var(--f-body);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:8px 10px 3px}
+.mdrop button{font:14px var(--f-body);text-align:left;background:none;border:0;color:var(--ink);padding:7px 10px 7px 18px;border-radius:3px;cursor:pointer}
+.mdrop button.top{padding-left:10px}
+.mdrop button:hover,.mdrop button:focus-visible{background:var(--accent);color:var(--sheet)}
+.spss-tabs{display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--line);background:var(--paper)}
+.spss-tabs [role=tab]{font:500 13px var(--f-body);border:0;border-right:1px solid var(--line);background:none;color:var(--muted);padding:8px 14px;cursor:pointer}
+.spss-tabs [role=tab][aria-selected=true]{background:var(--sheet);color:var(--ink);box-shadow:inset 0 -2px var(--accent)}
+.spss-tabs .tools{margin-left:auto;display:flex;gap:10px;align-items:center;padding:4px 10px;font-size:13px}
+.spss-tabs .tools label{display:flex;gap:6px;align-items:center}
+.spss-body{height:min(520px,70vh);min-height:320px;position:relative}
+.spss-body > div{position:absolute;inset:0;overflow:auto}
+table.grid{border-collapse:separate;border-spacing:0;font:13px var(--f-body);font-variant-numeric:tabular-nums}
+.grid th,.grid td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:3px 9px;white-space:nowrap;text-align:right}
+.grid thead th{position:sticky;top:0;background:var(--menu);z-index:2;font-weight:600;text-align:center}
+.grid tbody th{position:sticky;left:0;background:var(--menu);color:var(--muted);font-weight:400;z-index:1}
+.grid thead th:first-child{left:0;z-index:3}
+.grid td.lab,.grid td.txt{text-align:left}
+.grid .new{background:var(--hl);color:var(--hl-ink)}
+.grid input{width:64px;padding:2px 6px;font-size:13px}
+.out-view{padding:14px;display:grid;gap:26px;align-content:start}
+.ob{display:grid;gap:10px;min-width:0;justify-items:start}
+.ob-h{font:600 18px var(--f-display)}
+.ob-n{font:12px var(--f-mono);color:var(--muted)}
+.ob .note{max-width:60ch}
+.syntax{font:12.5px var(--f-mono);background:var(--paper);border:1px solid var(--line);padding:8px 10px;border-radius:4px;white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%}
+.empty{padding:28px 18px;color:var(--muted);display:grid;gap:6px;max-width:52ch}
+svg.chart{width:100%;max-width:520px;height:auto;background:var(--sheet);border:1px solid var(--line);border-radius:4px}
+svg.chart text{fill:var(--ink);font:11px var(--f-body)}
+svg.chart .ttl{font-weight:600;font-size:12.5px}
+svg.chart .gl{stroke:var(--line)}
+svg.chart .ax{stroke:var(--muted)}
+svg.chart .bar{fill:var(--accent)}
+svg.chart .hbar{fill:var(--accent);stroke:var(--sheet);stroke-width:1}
+svg.chart .box{fill:var(--accent-soft);stroke:var(--ink)}
+svg.chart .wh{stroke:var(--ink)}
+svg.chart .med{stroke:var(--ink);stroke-width:2.5}
+svg.chart .oc{fill:none;stroke:var(--ink)}
+svg.chart .ncurve{fill:none;stroke:var(--bad);stroke-width:1.8}
+svg.chart .pl{fill:var(--sheet);font-weight:600}
+svg.chart .pc0{fill:var(--c1)} svg.chart .pc1{fill:var(--c2)} svg.chart .pc2{fill:var(--c3)} svg.chart .pc3{fill:var(--c4)} svg.chart .pc4{fill:var(--c5)} svg.chart .pc5{fill:var(--c6)}
+svg.chart .sl{stroke:var(--sheet);stroke-width:1.5}
+
+.dlg-back{position:fixed;inset:0;z-index:20;background:rgb(10 14 22 / .5);display:grid;place-items:center;padding:max(12px,env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) max(12px,env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px))}
+.dlg{background:var(--sheet);color:var(--ink);border:1px solid var(--line);border-radius:8px;width:min(660px,100%);max-height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;box-shadow:0 20px 60px rgb(0 0 0 / .35);overflow:hidden}
+.dlg-h{background:var(--menu);padding:10px 14px;font:600 14px var(--f-body);border-bottom:1px solid var(--line)}
+.dlg-b{padding:14px;display:grid;gap:14px;overflow:auto;align-content:start}
+.dlg-f{display:flex;flex-wrap:wrap;gap:8px;justify-content:flex-end;align-items:center;padding:10px 14px;border-top:1px solid var(--line);background:var(--paper)}
+.dlg-f .err-msg{margin-right:auto;flex:1 1 220px}
+.btn.primary{background:var(--accent);color:var(--sheet);border-color:var(--accent);font-weight:600;padding:7px 16px}
+.vp{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+@media (max-width:560px){.vp{grid-template-columns:1fr}}
+.vcol{display:grid;gap:10px;align-content:start;min-width:0}
+.tgt{display:grid;gap:4px;min-width:0}
+.tgt-h{display:flex;justify-content:space-between;align-items:center;gap:8px;font:600 12.5px var(--f-body)}
+.vlist{border:1px solid var(--line);border-radius:4px;background:var(--paper);min-height:120px;max-height:210px;overflow:auto;padding:3px;display:grid;align-content:start}
+.tgt .vlist.small{min-height:44px}
+.vlist button{font:13px var(--f-body);text-align:left;background:none;border:0;color:var(--ink);padding:5px 6px;border-radius:3px;cursor:pointer;display:flex;gap:7px;align-items:center}
+.vlist button.sel{background:var(--accent);color:var(--sheet)}
+.ms{font:600 10px var(--f-mono);border:1px solid currentColor;border-radius:3px;padding:0 3px;opacity:.8;flex:none}
+.opts-g{display:flex;flex-wrap:wrap;gap:8px 18px}
+.opts-g label,.cbx{display:flex;gap:6px;align-items:center;font-size:14px}
+fieldset{border:1px solid var(--line);border-radius:5px;padding:8px 12px 12px;margin:0;min-width:0}
+legend{font:600 12.5px var(--f-body);padding:0 4px}
+.err-msg{color:var(--bad);font-size:13.5px}
+.fn-btns{display:flex;flex-wrap:wrap;gap:5px}
+.fn-btns .btn{font:12.5px var(--f-mono)}
+textarea{font:14px var(--f-mono);color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:4px;padding:7px 9px;width:100%;resize:vertical}
+.frow{display:flex;flex-wrap:wrap;gap:10px}
+.frow .field input{width:140px}
 </style>
 
 <nav class="menubar" aria-label="Topics"><div class="wrap">
-  <a href="#scope">Exam</a><a href="#basics">Basics</a><a href="#describe">Descriptives</a><a href="#tables">Tables &amp; graphs</a><a href="#binomial">Binomial</a><a href="#continuous">Uniform &amp; normal</a><a href="#calc">Calculator</a><a href="#estimation">Estimation</a><a href="#practice">Practice</a><a href="#cheat">Cheat sheet</a>
+  <a href="#scope">Exam</a><a href="#basics">Basics</a><a href="#describe">Descriptives</a><a href="#tables">Tables &amp; graphs</a><a href="#binomial">Binomial</a><a href="#continuous">Uniform &amp; normal</a><a href="#calc">Calculator</a><a href="#lab">SPSS lab</a><a href="#estimation">Estimation</a><a href="#practice">Practice</a><a href="#cheat">Cheat sheet</a>
 </div></nav>
 
 <header class="hero" id="scope"><div class="wrap">
   <div class="eyebrow">26MBASTB · Statistics for Business · In-class test</div>
   <h1>SPSS exam night</h1>
   <p class="lede">Everything from the course's weeks 1–7 slides and homework, with the SPSS steps for each. All numbers for <code>company-sales.sav</code> were computed from the actual file on Moodle.</p>
+  <p class="lede">No SPSS on your computer? The <b>SPSS lab</b> on this page copies the SPSS menus and dialogs with the real course data, and has 18 exercises that check your answers.</p>
+  <button type="button" class="try" data-ex="0">Open the SPSS lab</button>
   <div class="scope">
     <div><b>What it's worth</b>In-class test, 30% of the module. The final exam (70%) comes later.</div>
     <div><b>Likely coverage</b>Weeks 1–6: basics, descriptives, tables &amp; graphs, binomial, uniform &amp; normal. Week 7 (confidence intervals) was posted too, so revise it as well.</div>
@@ -214,13 +328,15 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
       <ol><li>Move the scale variable (e.g. Sales) into the list.</li>
         <li>Untick <b>Display frequency tables</b>, since a scale variable gives hundreds of rows.</li>
         <li><b>Statistics…</b>: tick Quartiles, Mean, Median, Mode, Std. deviation, Variance, Range, Min, Max, Skewness.</li>
-        <li><b>Charts…</b>: Histogram (optionally with a normal curve).</li></ol></div>
+        <li><b>Charts…</b>: Histogram (optionally with a normal curve).</li></ol>
+      <button type="button" class="try" data-ex="5">Practise in the lab</button></div>
     <div class="recipe"><h3>Box plot + outliers <span class="tag">SPSS</span></h3>
       <div class="path"><span>Analyze</span><span>Descriptive Statistics</span><span>Explore</span></div>
       <ol><li>Put the variable in <b>Dependent List</b>. To compare groups, put e.g. Sector in <b>Factor List</b>.</li>
         <li>Plots…: Boxplots "Factor levels together".</li>
         <li>The output gives Descriptives (mean, 95% CI, median, variance, SD, IQR, skewness) and a box plot.</li></ol>
-      <p class="note">Alternative: <span class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Boxplot</span></span></p></div>
+      <p class="note">Alternative: <span class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Boxplot</span></span></p>
+      <button type="button" class="try" data-ex="8">Practise in the lab</button></div>
   </div>
   <div class="pivot-wrap"><table class="pivot">
     <caption>Statistics: company-sales.sav (N = 300, computed from the file)</caption>
@@ -251,14 +367,16 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
       <div class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Bar</span><span>Simple</span><span>Define</span></div>
       <div class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Pie</span><span>Define</span></div>
       <ul class="tight"><li><b>Bar:</b> compares counts between classes. Works with many classes.</li>
-        <li><b>Pie:</b> compares percentages. Works with few classes and relative frequencies.</li></ul></div>
+        <li><b>Pie:</b> compares percentages. Works with few classes and relative frequencies.</li></ul>
+      <button type="button" class="try" data-ex="3">Practise in the lab</button></div>
     <div class="recipe"><h3>Quantitative → frequency distribution</h3>
       <div class="path"><span>Transform</span><span>Visual Binning</span></div>
       <ol><li>Choose the variable, then Continue.</li>
         <li>Name the binned variable (e.g. <code>sales_cat</code>).</li>
         <li><b>Make Cutpoints…</b>: Equal Width Intervals. First cutpoint just above the minimum. <mark>Number of cutpoints = classes − 1</mark>. Width is filled in.</li>
         <li><b>Make Labels</b>, then OK.</li>
-        <li>Run Frequencies on the new variable.</li></ol></div>
+        <li>Run Frequencies on the new variable.</li></ol>
+      <button type="button" class="try" data-ex="7">Practise in the lab</button></div>
     <div class="recipe"><h3>Histogram</h3>
       <div class="path"><span>Graphs</span><span>Legacy Dialogs</span><span>Histogram</span></div>
       <ul class="tight"><li>Bars touch (continuous classes). Heights are class frequencies.</li>
@@ -318,7 +436,8 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
       <ol><li>In Data View, type any number in row 1 of an empty column. Compute needs at least one case.</li>
         <li>Target Variable: e.g. <code>p1</code>.</li>
         <li>Numeric Expression: <code>PDF.BINOM(x, n, π)</code> for P(X = x), or <code>CDF.BINOM(x, n, π)</code> for P(X ≤ x).</li>
-        <li>In Variable View, set Decimals to 4, or the answer shows as .00.</li></ol></div>
+        <li>In Variable View, set Decimals to 4, or the answer shows as .00.</li></ol>
+      <button type="button" class="try" data-ex="13">Practise in the lab</button></div>
   </div>
   <h3>Translate the wording</h3>
   <div class="pivot-wrap"><table class="pivot phr">
@@ -415,7 +534,8 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
     <div class="recipe"><h3>CI for a mean <span class="tag">SPSS</span></h3>
       <div class="path"><span>Analyze</span><span>Descriptive Statistics</span><span>Explore</span></div>
       <ol><li>Put the variable in Dependent List.</li><li>Statistics…: Descriptives, and set the confidence interval for the mean (95, 90 or 99).</li><li>Read <i>95% Confidence Interval for Mean: Lower / Upper Bound</i>.</li></ol>
-      <p class="note">Alternative: <span class="path"><span>Analyze</span><span>Compare Means</span><span>One-Sample T Test</span></span> with Test Value 0. Options… sets the CI %.</p></div>
+      <p class="note">Alternative: <span class="path"><span>Analyze</span><span>Compare Means</span><span>One-Sample T Test</span></span> with Test Value 0. Options… sets the CI %.</p>
+      <button type="button" class="try" data-ex="10">Practise in the lab</button></div>
     <div class="recipe"><h3>CI for a proportion <span class="tag">SPSS</span></h3>
       <div class="path"><span>Analyze</span><span>Descriptive Statistics</span><span>Frequencies</span><span>Bootstrap</span></div>
       <ol><li>Tick <b>Perform bootstrapping</b> and set the confidence level.</li><li>The Frequencies table gains a bootstrap 95% CI column for each percentage.</li></ol>
@@ -429,6 +549,34 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
       <tr><th>99%</th><td>38.17</td><td>40.96</td><td>1.40</td></tr></tbody></table></div>
   <div class="callout tip"><b>Model interpretation</b>"We are 95% confident that the true mean sales of all companies lies between £38.51k and £40.63k. The point estimate is £39.57k with a margin of error of £1.06k. At 99% the interval widens to £38.17k–£40.96k."
     <span>Proportion in Greater Cairo: p = 162/300 = 0.54. 95% CI ≈ 0.484 to 0.596, error ≈ 0.056. Your bootstrap run will be close to this.</span></div>
+</div></section>
+
+<!-- LAB -->
+<section class="topic" id="lab"><div class="wrap">
+  <div class="tag">No SPSS needed · runs in your browser · real course data</div>
+  <h2>SPSS lab</h2>
+  <p>This window copies the SPSS Data Editor with <code>company-sales.sav</code> and <code>Rating.sav</code> loaded. The menus, dialogs and output tables work like SPSS. Pick an exercise, do it in the window, then type what the output shows. The lab ticks each step when you've done it.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:8px 14px;align-items:baseline"><h3>Exercises</h3><span class="ex-prog" id="exProg"></span></div>
+  <div class="ex-list" id="exList"></div>
+  <div class="task" id="task"></div>
+  <div class="spss" id="spss">
+    <div class="spss-title" id="spssTitle">company-sales.sav [DataSet1] · Practice Data Editor</div>
+    <div class="spss-menus" id="menus"></div>
+    <div class="spss-tabs">
+      <div role="tablist" aria-label="Views" style="display:flex">
+        <button type="button" role="tab" id="tab-data" aria-selected="true" aria-controls="viewData">Data View</button>
+        <button type="button" role="tab" id="tab-var" aria-selected="false" aria-controls="viewVar">Variable View</button>
+        <button type="button" role="tab" id="tab-out" aria-selected="false" aria-controls="viewOut">Output</button>
+      </div>
+      <div class="tools"><label id="vlabWrap"><input type="checkbox" id="vlab"> Value labels</label><button type="button" class="btn" id="clearOut" hidden>Clear output</button></div>
+    </div>
+    <div class="spss-body">
+      <div id="viewData" role="tabpanel" aria-labelledby="tab-data"></div>
+      <div id="viewVar" role="tabpanel" aria-labelledby="tab-var" hidden></div>
+      <div id="viewOut" role="tabpanel" aria-labelledby="tab-out" class="out-view" hidden></div>
+    </div>
+  </div>
+  <p class="note">This is a practice copy, not real SPSS. The menus include only what this course uses. Results follow SPSS's own formulas, and values like .2627 drop the leading zero the way SPSS does. In the exam, real SPSS can also differ in the last decimal and in bootstrap results.</p>
 </div></section>
 
 <!-- PRACTICE -->
@@ -497,6 +645,12 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
   <div class="check" id="checklist"></div>
   <div class="progress" id="prog"></div>
 </div></section>
+
+<div class="dlg-back" id="dlgBack" hidden><div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgTitle">
+  <div class="dlg-h" id="dlgTitle"></div>
+  <div class="dlg-b" id="dlgBody"></div>
+  <div class="dlg-f"><span class="err-msg" id="dlgErr" role="alert"></span><button type="button" class="btn" id="dlgReset">Reset</button><button type="button" class="btn" id="dlgCancel">Cancel</button><button type="button" class="btn primary" id="dlgOK">OK</button></div>
+</div></div>
 
 <footer><div class="wrap">Built from the 25 PDFs and 2 data files on the Statistics for Business Moodle page. Probabilities and data summaries were computed independently, and they match the slides except for the three noted errors. SPSS output can differ in the last decimal.</div></footer>
 
@@ -584,7 +738,7 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
   setDist('binom','ge');
 
   /* checklist */
-  const items=["Open company-sales.sav and check Variable View: names, labels, Measure column","Run Frequencies on Sector and Location, and write a 2-line comment for each","Make a bar chart and a pie chart from Legacy Dialogs","Bin Sales with Visual Binning (4 cutpoints, first = 20) and get 16% in 20.01–30.42","Draw a histogram and describe its shape","Run Explore on Sales by Sector and read the box plot","Use Compute Variable for PDF.BINOM, CDF.BINOM, CDF.NORMAL and CDF.UNIFORM (type a value in row 1 first)","Run a 95% CI for mean Sales (38.51 to 40.63)","Know the formulas: s², σ for uniform, nπ, nπ(1−π), z","Pack: laptop charged with charger, pens, pencils, ruler, calculator"];
+  const items=["Finish lab exercises 1–5: Variable View, frequency tables, bar and pie charts","Write a 2-line comment for the Sector and Location tables","Finish lab exercises 6–8: statistics, histogram, Visual Binning (16% in 20.01–30.42)","Finish lab exercises 9–10: Explore and box plots","Finish lab exercises 11–13: confidence intervals","Finish lab exercises 14–18: Compute Variable with CDF.BINOM, CDF.NORMAL, CDF.UNIFORM","Remember for the real exam: Compute needs at least one row of data, and Decimals must be raised to 4","Know the formulas: s², σ for uniform, nπ, nπ(1−π), z","Pack: pens, pencils, ruler, calculator, and a charged laptop if the exam is on your own machine"];
   const cb=$('checklist');store.c=store.c||{};
   const prog=()=>{$('prog').textContent=`${Object.values(store.c).filter(Boolean).length} of ${items.length} done`};
   items.forEach((t,i)=>{const l=document.createElement('label');l.innerHTML=`<input type="checkbox" id="ck${i}"><span>${t}</span>`;const c=l.querySelector('input');c.checked=!!store.c[i];c.onchange=()=>{store.c[i]=c.checked;save();prog()};cb.appendChild(l)});
@@ -596,4 +750,412 @@ footer{padding-block:32px 48px;color:var(--muted);font-size:13px;border-top:1px 
   document.querySelectorAll('header.hero,section.topic').forEach(s=>io.observe(s));
 })();
 </script>
+<script>
+(function(){
+"use strict";
+const RAW={"cs":[[1,38.6072,3,38.7771,2,1,1,29.8992,57.0996,7.7343,1],[2,39.6268,4,36.2478,2,1,1,34.8562,51.8141,5.7015,1],[3,51.957,5,75.7572,2,1,1,21.8492,49.7223,11.0134,1],[4,30.4643,6,45.3797,3,1,1,31.8696,57.2074,7.2572,1],[5,52.8866,3,40.7335,3,1,1,32.824,48.835,7.1984,1],[6,31.0648,4,46.8137,3,1,1,38.2969,47.2949,7.844,1],[7,50.4262,5,48.9486,3,1,1,30.8524,50.7919,8.855,1],[8,53.1367,7,52.3042,3,1,1,34.0326,46.3495,4.2137,1],[9,52.01,8,75.2134,3,1,1,33.7928,48.533,15.8731,2],[10,48.4019,9,75.8273,3,1,1,31.9966,52.7439,7.5304,2],[11,51.7666,10,67.1085,3,2,1,40.3453,51.6334,8.6482,2],[12,31.8813,3,57.3167,3,2,1,37.4968,50.1358,9.3808,2],[13,42.678,4,21.0857,3,2,1,35.8476,45.3638,10.1614,2],[14,53.012,2,30.9592,3,2,1,31.6359,51.9003,11.451,2],[15,49.7115,5,67.9568,3,2,1,39.6539,47.6892,13.1288,2],[16,49.2961,6,41.6575,3,2,1,30.3072,48.1587,9.0979,2],[17,46.7851,7,46.984,1,2,1,28.6293,50.287,7.4917,1],[18,48.106,8,92.1864,1,2,1,41.6714,50.6947,9.3298,1],[19,41.1827,11,65.3453,1,2,1,35.909,48.3651,10.119,1],[20,46.6511,10,43.3676,1,2,1,36.0511,50.5831,9.0578,1],[21,23.6995,19,56.3462,1,3,2,40.1771,51.0279,15.1811,1],[22,47.7418,12,42.9782,1,3,2,37.7276,52.2254,6.7057,1],[23,44.847,11,36.3045,1,3,2,32.3978,47.2053,9.3874,1],[24,37.1304,4,40.2113,1,3,2,35.3188,45.7557,10.6398,1],[25,44.0787,5,35.3957,1,3,2,37.8421,49.9261,9.8391,1],[26,49.9636,6,36.6729,1,3,2,36.7756,47.8552,11.3374,1],[27,43.7456,7,80.4371,2,3,2,34.5918,49.0064,14.6824,1],[28,28.497,8,42.478,2,3,2,41.4825,51.2686,6.1538,2],[29,19.0669,9,58.53,2,3,2,41.4258,48.0306,13.1068,2],[30,46.9979,6,63.1389,2,3,2,41.9866,47.5827,5.8981,2],[31,31.2425,7,57.0094,2,4,2,33.9072,55.4261,7.9631,2],[32,35.9384,8,49.7744,2,4,2,35.8088,49.9517,7.2878,2],[33,37.3792,4,48.5089,2,4,2,39.9341,55.0959,11.0006,2],[34,41.4033,3,28.3055,2,4,2,41.3519,49.1769,7.1103,2],[35,52.1223,2,19.4047,2,4,2,32.9758,55.2939,10.3014,2],[36,33.0739,1,57.063,2,4,2,38.0754,47.3767,10.2765,2],[37,33.8487,8,40.798,3,4,1,38.5021,49.1008,10.482,2],[38,41.9419,9,82.8555,3,4,1,31.788,51.0568,8.783,2],[39,37.349,11,64.7597,3,4,1,37.3458,51.3248,7.351,2],[40,23.678,12,56.4622,3,4,1,29.1719,48.8053,12.6314,2],[41,30.3146,16,32.2532,3,1,1,37.824,51.6291,8.294,2],[42,49.3797,17,47.2356,3,1,1,33.0484,54.365,9.1811,2],[43,45.5402,17,60.3721,3,1,1,36.2564,49.9329,8.1177,2],[44,41.2354,18,70.2816,3,1,1,35.5935,47.7985,14.0866,2],[45,24.6605,19,-7.0859,3,1,1,32.6017,50.6497,8.912,1],[46,34.4119,12,34.9404,3,1,1,38.549,52.4199,11.8522,1],[47,44.1298,13,60.052,3,1,1,40.474,50.6751,14.0724,1],[48,27.7406,14,60.7824,3,1,1,34.9262,49.2199,4.7825,1],[49,48.9464,15,22.7627,3,1,1,32.5479,49.621,6.3292,1],[50,46.0968,16,58.935,1,1,1,44.1621,52.6352,10.6066,1],[51,32.6581,12,49.1838,1,1,1,36.9648,48.3236,12.4785,1],[52,38.3899,9,88.2664,1,2,1,33.5279,51.1299,8.5437,1],[53,24.0312,9,20.252,1,2,1,16.5612,51.1006,8.3454,1],[54,37.0337,9,9.1363,1,2,2,32.0634,50.1622,16.286,1],[55,40.4632,9,45.4787,1,2,2,41.7541,52.5626,6.3367,1],[56,55.792,9,45.3101,1,2,2,34.2588,46.8897,5.9533,1],[57,42.4985,9,37.82,1,2,2,31.5028,49.1979,10.6468,1],[58,32.5491,9,29.4542,1,2,2,30.7946,52.3152,12.6718,1],[59,34.2906,9,58.6007,3,2,2,27.6982,51.1203,6.1402,2],[60,30.196,8,54.5384,3,2,2,32.852,49.9454,5.3949,2],[61,24.8877,8,46.8997,3,2,2,36.4815,46.6919,5.5562,2],[62,51.6223,8,43.4234,3,3,2,33.0126,48.9568,6.5356,2],[63,48.1592,7,62.6846,3,3,2,48.1691,41.1562,2.2856,2],[64,38.9215,8,28.7006,2,3,2,36.9677,50.5804,13.2535,2],[65,43.4315,9,63.5175,2,3,2,28.8238,48.1936,5.6147,2],[66,34.0208,8,71.564,2,3,2,32.2733,48.2303,11.056,2],[67,35.5081,7,65.908,2,3,2,31.5196,53.1241,13.2586,1],[68,37.9567,6,56.8106,2,3,2,38.2919,49.5334,9.106,1],[69,36.9913,5,30.2139,2,3,2,27.4633,49.0603,7.9766,1],[70,44.3591,9,69.079,1,3,2,37.3605,50.5134,8.3263,1],[71,26.5948,11,88.2925,1,3,2,30.9928,45.9027,8.0342,1],[72,61.6896,12,13.3485,1,4,2,29.3439,51.2092,9.0896,1],[73,33.7206,13,63.2744,1,4,2,30.8662,48.1643,10.3514,1],[74,43.326,10,88.9386,1,4,1,36.055,49.5664,9.8849,1],[75,47.7128,12,35.8547,1,4,1,35.6629,51.6481,4.305,1],[76,49.1788,13,86.6119,1,4,1,46.7697,52.5919,11.0691,1],[77,33.8939,24,38.5148,1,4,1,21.1124,50.6519,6.4418,1],[78,30.5659,21,24.5011,1,4,1,31.1376,49.2326,7.6179,2],[79,45.9536,23,24.7553,1,4,1,39.7053,53.2626,6.1872,2],[80,18.5533,18,93.8068,1,4,1,34.9148,45.7795,11.4512,2],[81,50.4103,17,67.5734,1,4,1,31.7482,51.5612,12.9304,2],[82,26.6682,12,82.0484,1,4,1,37.5778,53.2255,11.4272,2],[83,50.9607,9,44.9997,1,4,1,36.7737,48.8596,7.722,2],[84,34.353,8,8.8429,1,4,1,35.4095,44.3054,9.4297,2],[85,39.1082,9,36.3737,1,4,1,38.8975,47.762,8.3823,2],[86,29.9953,21,57.2112,1,4,1,35.7232,49.4232,9.1821,2],[87,39.3702,14,57.1161,1,4,1,42.498,46.8498,7.768,2],[88,36.8891,15,21.9334,1,4,1,43.5913,45.3583,9.1901,2],[89,40.1764,16,48.0443,1,4,1,28.2909,49.1242,12.4298,2],[90,32.9516,8,71.3346,1,4,1,40.0849,51.6807,12.5559,2],[91,27.9502,9,31.3445,2,4,2,34.4267,50.0766,-1.8834,2],[92,46.6861,8,40.374,2,3,2,42.9316,45.3703,5.9178,2],[93,58.8903,9,47.4371,2,3,2,38.4258,50.2296,10.5408,2],[94,25.512,8,35.287,2,3,2,33.5407,55.6741,10.2635,2],[95,41.8323,7,41.8291,2,3,2,29.539,51.8693,9.4652,1],[96,54.053,6,61.9214,2,3,2,37.2,48.1076,11.5181,1],[97,44.3586,5,73.2315,2,3,2,42.7862,51.289,12.8414,1],[98,25.535,9,76.1222,2,3,2,39.5837,53.0321,7.3118,1],[99,24.4209,7,71.26,2,3,2,36.2388,51.0085,7.3586,1],[100,36.0305,10,25.3658,2,3,2,35.6321,45.6215,7.8854,1],[101,54.2269,11,25.3977,2,3,2,36.5262,50.6339,8.415,1],[102,28.7377,12,59.1743,2,2,2,26.2568,45.0704,12.4515,1],[103,54.4878,12,77.7003,2,2,2,34.2763,49.7656,11.1865,1],[104,33.2959,12,48.4964,2,2,2,35.2461,48.2886,6.6426,1],[105,41.6042,11,34.9942,2,2,2,37.0142,49.6567,14.5326,1],[106,41.2846,11,76.3864,2,2,2,35.5099,55.4516,11.3382,1],[107,46.5987,10,56.9432,2,2,2,31.4695,53.5179,12.9572,1],[108,53.6498,6,57.4094,2,2,1,33.382,51.0371,16.2546,1],[109,25.0386,7,38.2989,3,2,1,41.6042,47.2176,10.0066,2],[110,25.3232,8,84.5696,3,2,1,36.9442,49.707,2.9595,2],[111,43.303,9,36.917,3,2,1,35.9493,51.177,10.4526,2],[112,26.1546,4,25.2386,3,1,1,32.2252,52.1307,13.9528,2],[113,46.6144,6,100.3489,3,1,1,30.2922,53.3211,16.471,2],[114,59.7521,7,44.5361,3,1,1,36.7122,53.0029,10.0623,2],[115,35.5523,5,66.1224,3,1,1,41.4301,49.5656,15.6427,2],[116,41.7752,22,40.7756,3,1,1,38.0504,44.7733,17.6188,2],[117,38.7899,12,55.7423,3,1,1,36.6427,48.7303,9.116,1],[118,37.3604,12,51.2579,3,1,1,42.1169,47.3045,10.3493,1],[119,46.0768,14,51.251,3,1,1,27.4873,47.0133,13.4688,1],[120,37.2763,13,18.4188,3,1,1,32.2496,53.3931,15.5704,1],[32,35.9384,8,49.7744,2,4,2,35.8088,49.9517,7.2878,1],[33,37.3792,4,48.5089,2,4,2,39.9341,55.0959,11.0006,1],[34,41.4033,3,28.3055,2,4,2,41.3519,49.1769,7.1103,1],[35,52.1223,2,19.4047,2,4,2,32.9758,55.2939,10.3014,1],[36,33.0739,1,57.063,2,4,2,38.0754,47.3767,10.2765,1],[37,33.8487,8,40.798,3,4,1,38.5021,49.1008,10.482,1],[38,41.9419,9,82.8555,3,4,1,31.788,51.0568,8.783,1],[39,37.349,11,64.7597,3,4,1,37.3458,51.3248,7.351,2],[40,23.678,12,56.4622,3,4,1,29.1719,48.8053,12.6314,2],[41,30.3146,16,32.2532,3,1,1,37.824,51.6291,8.294,2],[42,49.3797,17,47.2356,3,1,1,33.0484,54.365,9.1811,2],[43,45.5402,17,60.3721,3,1,1,36.2564,49.9329,8.1177,2],[44,41.2354,18,70.2816,3,1,1,35.5935,47.7985,14.0866,2],[45,24.6605,19,-7.0859,3,1,1,32.6017,50.6497,8.912,2],[46,34.4119,12,34.9404,3,1,1,38.549,52.4199,11.8522,2],[47,44.1298,13,60.052,3,1,1,40.474,50.6751,14.0724,2],[48,27.7406,14,60.7824,3,1,1,34.9262,49.2199,4.7825,2],[49,48.9464,15,22.7627,3,1,1,32.5479,49.621,6.3292,2],[50,46.0968,16,58.935,1,1,1,44.1621,52.6352,10.6066,2],[51,32.6581,12,49.1838,1,1,1,36.9648,48.3236,12.4785,2],[52,38.3899,9,88.2664,1,2,1,33.5279,51.1299,8.5437,2],[53,24.0312,9,20.252,1,2,1,16.5612,51.1006,8.3454,2],[54,37.0337,9,9.1363,1,2,2,32.0634,50.1622,16.286,2],[55,40.4632,9,45.4787,1,2,2,41.7541,52.5626,6.3367,2],[56,55.792,9,45.3101,1,2,2,34.2588,46.8897,5.9533,1],[57,42.4985,9,37.82,1,2,2,31.5028,49.1979,10.6468,1],[58,32.5491,9,29.4542,1,2,2,30.7946,52.3152,12.6718,1],[59,34.2906,9,58.6007,3,2,2,27.6982,51.1203,6.1402,1],[60,30.196,8,54.5384,3,2,2,32.852,49.9454,5.3949,1],[61,24.8877,8,46.8997,3,2,2,36.4815,46.6919,5.5562,1],[62,51.6223,8,43.4234,3,3,2,33.0126,48.9568,6.5356,1],[63,48.1592,7,62.6846,3,3,2,48.1691,41.1562,2.2856,1],[64,38.9215,8,28.7006,2,3,2,36.9677,50.5804,13.2535,1],[65,43.4315,9,63.5175,2,3,2,28.8238,48.1936,5.6147,1],[66,34.0208,8,71.564,2,3,2,32.2733,48.2303,11.056,1],[67,35.5081,7,65.908,2,3,2,31.5196,53.1241,13.2586,1],[68,37.9567,6,56.8106,2,3,2,38.2919,49.5334,9.106,1],[69,36.9913,5,30.2139,2,3,2,27.4633,49.0603,7.9766,1],[70,44.3591,9,69.079,1,3,2,37.3605,50.5134,8.3263,2],[71,26.5948,11,88.2925,1,3,2,30.9928,45.9027,8.0342,2],[72,61.6896,12,13.3485,1,4,2,29.3439,51.2092,9.0896,2],[73,33.7206,13,63.2744,1,4,2,30.8662,48.1643,10.3514,2],[74,43.326,10,88.9386,1,4,1,36.055,49.5664,9.8849,2],[75,47.7128,12,35.8547,1,4,1,35.6629,51.6481,4.305,2],[76,49.1788,13,86.6119,1,4,1,46.7697,52.5919,11.0691,2],[77,33.8939,24,38.5148,1,4,1,21.1124,50.6519,6.4418,2],[78,30.5659,21,24.5011,1,4,1,31.1376,49.2326,7.6179,1],[52,38.3899,9,88.2664,1,2,1,33.5279,51.1299,8.5437,1],[53,24.0312,9,20.252,1,2,1,16.5612,51.1006,8.3454,1],[54,37.0337,9,9.1363,1,2,2,32.0634,50.1622,16.286,1],[55,40.4632,9,45.4787,1,2,2,41.7541,52.5626,6.3367,1],[56,55.792,9,45.3101,1,2,2,34.2588,46.8897,5.9533,1],[57,42.4985,9,37.82,1,2,2,31.5028,49.1979,10.6468,1],[58,32.5491,9,29.4542,1,2,2,30.7946,52.3152,12.6718,1],[59,34.2906,9,58.6007,3,2,2,27.6982,51.1203,6.1402,1],[60,30.196,8,54.5384,3,2,2,32.852,49.9454,5.3949,1],[61,24.8877,8,46.8997,3,2,2,36.4815,46.6919,5.5562,1],[62,51.6223,8,43.4234,3,3,2,33.0126,48.9568,6.5356,2],[63,48.1592,7,62.6846,3,3,2,48.1691,41.1562,2.2856,2],[64,38.9215,8,28.7006,2,3,2,36.9677,50.5804,13.2535,2],[65,43.4315,9,63.5175,2,3,2,28.8238,48.1936,5.6147,2],[66,34.0208,8,71.564,2,3,2,32.2733,48.2303,11.056,2],[67,35.5081,7,65.908,2,3,2,31.5196,53.1241,13.2586,2],[68,37.9567,6,56.8106,2,3,2,38.2919,49.5334,9.106,2],[69,36.9913,5,30.2139,2,3,2,27.4633,49.0603,7.9766,2],[70,44.3591,9,69.079,1,3,2,37.3605,50.5134,8.3263,2],[71,26.5948,11,88.2925,1,3,2,30.9928,45.9027,8.0342,2],[72,61.6896,12,13.3485,1,4,2,29.3439,51.2092,9.0896,2],[73,33.7206,13,63.2744,1,4,2,30.8662,48.1643,10.3514,2],[74,43.326,10,88.9386,1,4,1,36.055,49.5664,9.8849,2],[75,47.7128,12,35.8547,1,4,1,35.6629,51.6481,4.305,2],[76,49.1788,13,86.6119,1,4,1,46.7697,52.5919,11.0691,2],[77,33.8939,24,38.5148,1,4,1,21.1124,50.6519,6.4418,2],[78,30.5659,21,24.5011,1,4,1,31.1376,49.2326,7.6179,2],[79,45.9536,23,24.7553,1,4,1,39.7053,53.2626,6.1872,1],[80,18.5533,18,93.8068,1,4,1,34.9148,45.7795,11.4512,1],[81,50.4103,17,67.5734,1,4,1,31.7482,51.5612,12.9304,1],[82,26.6682,12,82.0484,1,4,1,37.5778,53.2255,11.4272,1],[83,50.9607,9,44.9997,1,4,1,36.7737,48.8596,7.722,1],[84,34.353,8,8.8429,1,4,1,35.4095,44.3054,9.4297,1],[85,39.1082,9,36.3737,1,4,1,38.8975,47.762,8.3823,1],[86,29.9953,21,57.2112,1,4,1,35.7232,49.4232,9.1821,1],[87,39.3702,14,57.1161,1,4,1,42.498,46.8498,7.768,1],[88,36.8891,15,21.9334,1,4,1,43.5913,45.3583,9.1901,1],[89,40.1764,16,48.0443,1,4,1,28.2909,49.1242,12.4298,1],[90,32.9516,8,71.3346,1,4,1,40.0849,51.6807,12.5559,1],[91,27.9502,9,31.3445,2,4,2,34.4267,50.0766,-1.8834,1],[1,38.6072,3,38.7771,2,1,1,29.8992,57.0996,7.7343,1],[2,39.6268,4,36.2478,2,1,1,34.8562,51.8141,5.7015,2],[3,51.957,5,75.7572,2,1,1,21.8492,49.7223,11.0134,2],[4,30.4643,6,45.3797,3,1,1,31.8696,57.2074,7.2572,2],[5,52.8866,3,40.7335,3,1,1,32.824,48.835,7.1984,2],[6,31.0648,4,46.8137,3,1,1,38.2969,47.2949,7.844,2],[7,50.4262,5,48.9486,3,1,1,30.8524,50.7919,8.855,2],[8,53.1367,7,52.3042,3,1,1,34.0326,46.3495,4.2137,2],[9,52.01,8,75.2134,3,1,1,33.7928,48.533,15.8731,2],[10,48.4019,9,75.8273,3,1,1,31.9966,52.7439,7.5304,1],[11,51.7666,10,67.1085,3,2,1,40.3453,51.6334,8.6482,1],[12,31.8813,3,57.3167,3,2,1,37.4968,50.1358,9.3808,1],[13,42.678,4,21.0857,3,2,1,35.8476,45.3638,10.1614,1],[14,53.012,2,30.9592,3,2,1,31.6359,51.9003,11.451,1],[15,49.7115,5,67.9568,3,2,1,39.6539,47.6892,13.1288,1],[16,49.2961,6,41.6575,3,2,1,30.3072,48.1587,9.0979,1],[17,46.7851,7,46.984,1,2,1,28.6293,50.287,7.4917,1],[18,48.106,8,92.1864,1,2,1,41.6714,50.6947,9.3298,1],[19,41.1827,11,65.3453,1,2,1,35.909,48.3651,10.119,1],[20,46.6511,10,43.3676,1,2,1,36.0511,50.5831,9.0578,1],[21,23.6995,19,56.3462,1,3,2,40.1771,51.0279,15.1811,2],[22,47.7418,12,42.9782,1,3,2,37.7276,52.2254,6.7057,2],[23,44.847,11,36.3045,1,3,2,32.3978,47.2053,9.3874,2],[24,37.1304,4,40.2113,1,3,2,35.3188,45.7557,10.6398,2],[25,44.0787,5,35.3957,1,3,2,37.8421,49.9261,9.8391,2],[26,49.9636,6,36.6729,1,3,2,36.7756,47.8552,11.3374,2],[27,43.7456,7,80.4371,2,3,2,34.5918,49.0064,14.6824,2],[28,28.497,8,42.478,2,3,2,41.4825,51.2686,6.1538,2],[29,19.0669,9,58.53,2,3,2,41.4258,48.0306,13.1068,2],[30,46.9979,6,63.1389,2,3,2,41.9866,47.5827,5.8981,2],[31,31.2425,7,57.0094,2,4,2,33.9072,55.4261,7.9631,2],[32,35.9384,8,49.7744,2,4,2,35.8088,49.9517,7.2878,2],[33,37.3792,4,48.5089,2,4,2,39.9341,55.0959,11.0006,2],[34,41.4033,3,28.3055,2,4,2,41.3519,49.1769,7.1103,2],[35,52.1223,2,19.4047,2,4,2,32.9758,55.2939,10.3014,2],[36,33.0739,1,57.063,2,4,2,38.0754,47.3767,10.2765,2],[37,33.8487,8,40.798,3,4,1,38.5021,49.1008,10.482,2],[38,41.9419,9,82.8555,3,4,1,31.788,51.0568,8.783,1],[39,37.349,11,64.7597,3,4,1,37.3458,51.3248,7.351,1],[40,23.678,12,56.4622,3,4,1,29.1719,48.8053,12.6314,1],[41,30.3146,16,32.2532,3,1,1,37.824,51.6291,8.294,1],[42,49.3797,17,47.2356,3,1,1,33.0484,54.365,9.1811,1],[43,45.5402,17,60.3721,3,1,1,36.2564,49.9329,8.1177,1],[44,41.2354,18,70.2816,3,1,1,35.5935,47.7985,14.0866,1],[45,24.6605,19,-7.0859,3,1,1,32.6017,50.6497,8.912,1],[46,34.4119,12,34.9404,3,1,1,38.549,52.4199,11.8522,1],[47,44.1298,13,60.052,3,1,1,40.474,50.6751,14.0724,1],[48,27.7406,14,60.7824,3,1,1,34.9262,49.2199,4.7825,1],[49,48.9464,15,22.7627,3,1,1,32.5479,49.621,6.3292,1],[50,46.0968,16,58.935,1,1,1,44.1621,52.6352,10.6066,1],[51,32.6581,12,49.1838,1,1,1,36.9648,48.3236,12.4785,1],[52,38.3899,9,88.2664,1,2,1,33.5279,51.1299,8.5437,2],[53,24.0312,9,20.252,1,2,1,16.5612,51.1006,8.3454,2],[54,37.0337,9,9.1363,1,2,2,32.0634,50.1622,16.286,2],[55,40.4632,9,45.4787,1,2,2,41.7541,52.5626,6.3367,2],[56,55.792,9,45.3101,1,2,2,34.2588,46.8897,5.9533,2],[57,42.4985,9,37.82,1,2,2,31.5028,49.1979,10.6468,2],[58,32.5491,9,29.4542,1,2,2,30.7946,52.3152,12.6718,2],[59,34.2906,9,58.6007,3,2,2,27.6982,51.1203,6.1402,2],[60,30.196,8,54.5384,3,2,2,32.852,49.9454,5.3949,1],[61,24.8877,8,46.8997,3,2,2,36.4815,46.6919,5.5562,1],[62,51.6223,8,43.4234,3,3,2,33.0126,48.9568,6.5356,1],[63,48.1592,7,62.6846,3,3,2,48.1691,41.1562,2.2856,1],[64,38.9215,8,28.7006,2,3,2,36.9677,50.5804,13.2535,1],[65,43.4315,9,63.5175,2,3,2,28.8238,48.1936,5.6147,1],[66,34.0208,8,71.564,2,3,2,32.2733,48.2303,11.056,1],[67,35.5081,7,65.908,2,3,2,31.5196,53.1241,13.2586,1],[68,37.9567,6,56.8106,2,3,2,38.2919,49.5334,9.106,1],[69,36.9913,5,30.2139,2,3,2,27.4633,49.0603,7.9766,1],[70,44.3591,9,69.079,1,3,2,37.3605,50.5134,8.3263,1],[71,26.5948,11,88.2925,1,3,2,30.9928,45.9027,8.0342,2],[72,61.6896,12,13.3485,1,4,2,29.3439,51.2092,9.0896,2],[73,33.7206,13,63.2744,1,4,2,30.8662,48.1643,10.3514,2],[74,43.326,10,88.9386,1,4,1,36.055,49.5664,9.8849,2],[75,47.7128,12,35.8547,1,4,1,35.6629,51.6481,4.305,2],[76,49.1788,13,86.6119,1,4,1,46.7697,52.5919,11.0691,2],[77,33.8939,24,38.5148,1,4,1,21.1124,50.6519,6.4418,2],[78,30.5659,21,24.5011,1,4,1,31.1376,49.2326,7.6179,2],[79,45.9536,23,24.7553,1,4,1,39.7053,53.2626,6.1872,2],[80,18.5533,18,93.8068,1,4,1,34.9148,45.7795,11.4512,2],[81,50.4103,17,67.5734,1,4,1,31.7482,51.5612,12.9304,2],[82,26.6682,12,82.0484,1,4,1,37.5778,53.2255,11.4272,2],[83,50.9607,9,44.9997,1,4,1,36.7737,48.8596,7.722,2],[84,34.353,8,8.8429,1,4,1,35.4095,44.3054,9.4297,2],[85,39.1082,9,36.3737,1,4,1,38.8975,47.762,8.3823,2],[86,29.9953,21,57.2112,1,4,1,35.7232,49.4232,9.1821,2],[87,39.3702,14,57.1161,1,4,1,42.498,46.8498,7.768,2],[88,36.8891,15,21.9334,1,4,1,43.5913,45.3583,9.1901,1],[89,40.1764,16,48.0443,1,4,1,28.2909,49.1242,12.4298,1],[90,32.9516,8,71.3346,1,4,1,40.0849,51.6807,12.5559,1],[91,27.9502,9,31.3445,2,4,2,34.4267,50.0766,-1.8834,1],[92,46.6861,8,40.374,2,3,2,42.9316,45.3703,5.9178,1],[93,58.8903,9,47.4371,2,3,2,38.4258,50.2296,10.5408,1]],"rt":[[1,1],[2,2],[3,2],[4,2],[5,1],[6,2],[7,3],[8,2],[9,1],[10,2]]};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const el=(t,c)=>{const e=document.createElement(t);if(c)e.className=c;return e};
+let store={};try{store=JSON.parse(localStorage.getItem('spss-lab')||'{}')||{}}catch(e){}
+store.ex=store.ex||{};
+const save=()=>{try{localStorage.setItem('spss-lab',JSON.stringify(store))}catch(e){}};
+
+/* ---------- math ---------- */
+function lg(z){const c=[676.5203681218851,-1259.1392167224028,771.32342877765313,-176.61502916214059,12.507343278686905,-0.13857109526572012,9.9843695780195716e-6,1.5056327351493116e-7];if(z<0.5)return Math.log(Math.PI/Math.sin(Math.PI*z))-lg(1-z);z-=1;let x=0.99999999999980993;for(let i=0;i<8;i++)x+=c[i]/(z+i+1);const t=z+7.5;return 0.5*Math.log(2*Math.PI)+(z+0.5)*Math.log(t)-t+Math.log(x)}
+const lnC=(n,k)=>lg(n+1)-lg(k+1)-lg(n-k+1);
+const isInt=v=>Math.abs(v-Math.round(v))<1e-9;
+function bpdf(k,n,p){if(!(n>=0&&isInt(n)&&p>=0&&p<=1))return NaN;if(!isInt(k)||k<0||k>n)return 0;k=Math.round(k);if(p===0)return k===0?1:0;if(p===1)return k===n?1:0;return Math.exp(lnC(n,k)+k*Math.log(p)+(n-k)*Math.log(1-p))}
+function bcdf(k,n,p){if(!(n>=0&&isInt(n)&&p>=0&&p<=1))return NaN;k=Math.floor(k+1e-9);if(k<0)return 0;let s=0;for(let i=0;i<=Math.min(k,n);i++)s+=bpdf(i,n,p);return Math.min(1,s)}
+function erf(x){const s=Math.sign(x);x=Math.abs(x);let sum=0,term=x,n=0;if(x<3){while(Math.abs(term)>1e-16&&n<300){sum+=term/(2*n+1);n++;term*=-x*x/n}return s*2/Math.sqrt(Math.PI)*sum}let f=0;for(let k=60;k>=1;k--)f=k/2/(x+f);return s*(1-Math.exp(-x*x)/Math.sqrt(Math.PI)/(x+f))}
+const ncdf=(x,m,s)=>s>0?0.5*(1+erf((x-m)/(s*Math.SQRT2))):NaN;
+const npdf=(x,m,s)=>s>0?Math.exp(-(((x-m)/s)**2)/2)/(s*Math.sqrt(2*Math.PI)):NaN;
+const ucdf=(x,a,b)=>b>a?Math.min(1,Math.max(0,(x-a)/(b-a))):NaN;
+const updf=(x,a,b)=>b>a?(x>=a&&x<=b?1/(b-a):0):NaN;
+function ninv(p,m,s){if(!(p>0&&p<1&&s>0))return NaN;let lo=-40,hi=40;for(let i=0;i<200;i++){const z=(lo+hi)/2;ncdf(z,0,1)<p?lo=z:hi=z}return m+s*(lo+hi)/2}
+function betacf(a,b,x){const F=1e-300;let qab=a+b,qap=a+1,qam=a-1,c=1,d=1-qab*x/qap;if(Math.abs(d)<F)d=F;d=1/d;let h=d;for(let m=1;m<=300;m++){const m2=2*m;let aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<F)d=F;c=1+aa/c;if(Math.abs(c)<F)c=F;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<3e-15)break}return h}
+function ibeta(x,a,b){if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lg(a+b)-lg(a)-lg(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b}
+const tcdf=(t,df)=>{const p=0.5*ibeta(df/(df+t*t),df/2,0.5);return t>0?1-p:p};
+function tinv(p,df){let lo=-500,hi=500;for(let i=0;i<200;i++){const m=(lo+hi)/2;tcdf(m,df)<p?lo=m:hi=m}return (lo+hi)/2}
+
+/* ---------- stats (SPSS definitions) ---------- */
+const S={
+  mean:x=>x.reduce((a,b)=>a+b,0)/x.length,
+  var:x=>{const m=S.mean(x);return x.reduce((a,v)=>a+(v-m)**2,0)/(x.length-1)},
+  sd:x=>Math.sqrt(S.var(x)),
+  min:x=>Math.min(...x),max:x=>Math.max(...x),
+  pct:(x,p)=>{const s=[...x].sort((a,b)=>a-b),n=s.length,w=p*(n+1);if(w<=1)return s[0];if(w>=n)return s[n-1];const k=Math.floor(w),f=w-k;return s[k-1]+f*(s[k]-s[k-1])},
+  mode:x=>{const c=new Map();x.forEach(v=>c.set(v,(c.get(v)||0)+1));let best=-1,val=null,multi=false;[...c.entries()].sort((a,b)=>a[0]-b[0]).forEach(([v,k])=>{if(k>best){best=k;val=v;multi=false}else if(k===best)multi=true});return{val,multi}},
+  skew:x=>{const n=x.length,m=S.mean(x),s=S.sd(x);return n/((n-1)*(n-2))*x.reduce((a,v)=>a+((v-m)/s)**3,0)},
+  seSkew:n=>Math.sqrt(6*n*(n-1)/((n-2)*(n+1)*(n+3))),
+  kurt:x=>{const n=x.length,m=S.mean(x),s=S.sd(x);return n*(n+1)/((n-1)*(n-2)*(n-3))*x.reduce((a,v)=>a+((v-m)/s)**4,0)-3*(n-1)**2/((n-2)*(n-3))},
+  seKurt:n=>2*S.seSkew(n)*Math.sqrt((n*n-1)/((n-3)*(n+5))),
+  trim5:x=>{const s=[...x].sort((a,b)=>a-b),k=Math.floor(0.05*s.length);const t=s.slice(k,s.length-k);return S.mean(t)}
+};
+const ciMean=(x,l)=>{const n=x.length,m=S.mean(x),se=S.sd(x)/Math.sqrt(n),t=tinv(1-(1-l/100)/2,n-1);return[m-t*se,m+t*se]};
+
+/* ---------- formatting ---------- */
+const fs=(v,d=3)=>{if(v==null||!isFinite(v))return '.';const s=(+v).toFixed(d);return s.replace(/^(-?)0\./,'$1.')};
+const fmtTick=t=>Number.isInteger(t)?String(t):String(+t.toFixed(4));
+const trunc=(s,n)=>s.length>n?s.slice(0,n-1)+'…':s;
+
+/* ---------- datasets ---------- */
+const V=(name,label,measure,dec,values)=>({name,label,measure,dec,values:values||null});
+function makeDS(){return{
+  'company-sales.sav':{vars:[V('ID','ID','scale',0),V('SALES','Total Sales (in thousand Pound)','scale',2),V('EMPLOYEE','Number of Employees','scale',0),V('CAPITAL','Capital Size (in thousand Pound)','scale',2),V('BRANCHES','Number of Branches','scale',0),
+    V('SECTOR','Sector','nominal',0,{1:'It',2:'Constructions',3:'Agriculture',4:'Others'}),V('LOCATION','Location','nominal',0,{1:'Greater Cairo',2:'Outside Cairo'}),
+    V('AVERGAE','Average age in the company','scale',2),V('MANG_AGE','General manager age','scale',2),V('SOCIAL','Social Protection Expenditure (in thousand Pound)','scale',2),V('MANG_GEN','The manager gender','nominal',0,{1:'Female',2:'Male'})],
+    rows:RAW.cs.map(r=>r.slice())},
+  'Rating.sav':{vars:[V('ID','ID','scale',0),V('RATING','Customer rating of a product','ordinal',0,{1:'Excellent',2:'Good',3:'Poor'})],rows:RAW.rt.map(r=>r.slice())}}}
+let DS=makeDS(),cur='company-sales.sav';
+const ds=()=>DS[cur];
+const vi=(d,n)=>d.vars.findIndex(v=>v.name===n);
+const vOf=(d,n)=>d.vars[vi(d,n)];
+const colOf=(d,n)=>{const i=vi(d,n);return d.rows.map(r=>r[i])};
+const valid=a=>a.filter(v=>v!=null&&isFinite(v));
+const labOf=(v,x)=>v.values&&v.values[x]!=null?v.values[x]:fs(x,v.dec);
+const vname=(d,n)=>{const v=vOf(d,n);return v.label||v.name};
+
+/* ---------- runs (for exercise checks) ---------- */
+const runs=[];
+function record(r){r.ds=cur;runs.push(r);renderTask(false)}
+
+/* ---------- output ---------- */
+const viewOut=$('viewOut'),viewData=$('viewData'),viewVar=$('viewVar');
+function pivot(cap,head,rows,thc=1){
+  return `<div class="pivot-wrap"><table class="pivot"><caption>${esc(cap)}</caption><thead><tr>${head.map(h=>`<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>{const c=Array.isArray(r)?r:r.c;return `<tr${r.cls?` class="${r.cls}"`:''}>${c.map((x,i)=>i<thc?`<th>${esc(x)}</th>`:`<td>${esc(x)}</td>`).join('')}</tr>`}).join('')}</tbody></table></div>`}
+let outCount=0;
+function addOutput(title,html,switchTab=true){
+  if(!outCount)viewOut.innerHTML='';
+  outCount++;
+  const b=el('div','ob');b.innerHTML=`<div class="ob-h">${esc(title)}</div><div class="ob-n">[DataSet] ${esc(cur)}</div>${html}`;
+  viewOut.appendChild(b);$('tab-out').textContent=`Output (${outCount})`;
+  if(switchTab){setTab('out',true);viewOut.scrollTop=b.offsetTop-8}
+}
+function emptyOut(){outCount=0;$('tab-out').textContent='Output';viewOut.innerHTML='<div class="empty"><b>No output yet</b><span>Run something from the Analyze, Graphs or Transform menu. Tables and charts appear here, newest at the bottom.</span></div>'}
+
+/* ---------- charts ---------- */
+function nice(lo,hi,n){if(hi===lo){hi=lo+1}const st0=(hi-lo)/n,mag=10**Math.floor(Math.log10(st0)),st=[1,2,2.5,5,10].map(k=>k*mag).find(s=>s>=st0-1e-12);const a=Math.floor(lo/st+1e-9)*st,b=Math.ceil(hi/st-1e-9)*st;const t=[];for(let v=a;v<=b+st/2;v+=st)t.push(+v.toFixed(10));return{a,b:b>a?b:a+st,st,t}}
+const svgOpen=(w,h,t)=>`<svg class="chart" viewBox="0 0 ${w} ${h}" role="img" aria-label="${esc(t)}">`;
+function axesY(s,y,sy,L,R,W){y.t.forEach(t=>{s.push(`<line class="gl" x1="${L}" x2="${W-R}" y1="${sy(t)}" y2="${sy(t)}"/><text x="${L-6}" y="${sy(t)+4}" text-anchor="end">${fmtTick(t)}</text>`)})}
+function barSVG(cats,ylab,title){
+  const W=480,H=300,L=52,R=12,T=30,B=56,max=Math.max(...cats.map(c=>c.v)),y=nice(0,max,5);
+  const sy=v=>T+(H-T-B)*(1-(v-y.a)/(y.b-y.a)),bw=(W-L-R)/cats.length;const s=[svgOpen(W,H,title),`<text class="ttl" x="${L}" y="16">${esc(title)}</text>`];
+  axesY(s,y,sy,L,R,W);
+  cats.forEach((c,i)=>{const x=L+i*bw+bw*.18,w=bw*.64;s.push(`<rect class="bar" x="${x}" y="${sy(c.v)}" width="${w}" height="${Math.max(0,sy(0)-sy(c.v))}"/><text x="${x+w/2}" y="${H-B+16}" text-anchor="middle">${esc(trunc(c.label,Math.max(6,Math.floor(bw/6.5))))}</text>`)});
+  s.push(`<line class="ax" x1="${L}" x2="${W-R}" y1="${sy(0)}" y2="${sy(0)}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${sy(0)}"/><text transform="translate(14 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">${esc(ylab)}</text></svg>`);
+  return s.join('')}
+function pieSVG(cats,title){
+  const W=480,H=290,cx=140,cy=160,r=110,tot=cats.reduce((a,c)=>a+c.v,0);let a0=-Math.PI/2;const s=[svgOpen(W,H,title),`<text class="ttl" x="16" y="18">${esc(title)}</text>`];
+  cats.forEach((c,i)=>{const frac=c.v/tot,a1=a0+2*Math.PI*frac,P=a=>[cx+r*Math.cos(a),cy+r*Math.sin(a)];const[x0,y0]=P(a0),[x1,y1]=P(a1);
+    s.push(frac>=0.9999?`<circle class="pc${i%6} sl" cx="${cx}" cy="${cy}" r="${r}"/>`:`<path class="pc${i%6} sl" d="M${cx},${cy} L${x0.toFixed(2)},${y0.toFixed(2)} A${r},${r} 0 ${a1-a0>Math.PI?1:0} 1 ${x1.toFixed(2)},${y1.toFixed(2)} Z"/>`);
+    const am=(a0+a1)/2;if(frac>.045)s.push(`<text class="pl" x="${(cx+r*.62*Math.cos(am)).toFixed(1)}" y="${(cy+r*.62*Math.sin(am)+4).toFixed(1)}" text-anchor="middle">${(100*frac).toFixed(1)}%</text>`);a0=a1});
+  cats.forEach((c,i)=>{const y=70+i*22;s.push(`<rect class="pc${i%6}" x="285" y="${y-10}" width="13" height="13" rx="2"/><text x="305" y="${y+1}">${esc(trunc(c.label,24))}</text>`)});
+  return s.join('')+'</svg>'}
+function histSVG(x,o){
+  const W=480,H=310,L=52,R=12,T=52,B=48,n=x.length,m=S.mean(x),sd=S.sd(x);let bins=[],edges=null,st=1;
+  if(o.labels){const vals=[...new Set(x)].sort((a,b)=>a-b);bins=vals.map(v=>({lab:o.labels[v]!=null?o.labels[v]:fmtTick(v),c:x.filter(t=>t===v).length}))}
+  else{const mn=S.min(x),mx=S.max(x),k=nice(mn,mx,12);st=k.st;edges=[];for(let e=k.a;e<=k.b+st/2;e+=st)edges.push(+e.toFixed(10));if(edges.length<2)edges.push(edges[0]+st);
+    for(let i=0;i<edges.length-1;i++){const last=i===edges.length-2;bins.push({c:x.filter(v=>v>=edges[i]&&(v<edges[i+1]||(last&&v<=edges[i+1]))).length})}}
+  let ymax=Math.max(...bins.map(b=>b.c));const curve=o.normal&&edges;if(curve)ymax=Math.max(ymax,n*st*npdf(m,m,sd));
+  const y=nice(0,ymax,5),sy=v=>T+(H-T-B)*(1-v/y.b),bw=(W-L-R)/bins.length;const s=[svgOpen(W,H,o.title),`<text class="ttl" x="${L}" y="16">${esc(o.title)}</text>`];
+  s.push(`<text x="${W-R}" y="16" text-anchor="end">Mean = ${fs(m,2)}</text><text x="${W-R}" y="30" text-anchor="end">Std. Dev. = ${fs(sd,3)}</text><text x="${W-R}" y="44" text-anchor="end">N = ${n}</text>`);
+  axesY(s,y,sy,L,R,W);
+  bins.forEach((b,i)=>{s.push(`<rect class="hbar" x="${L+i*bw}" y="${sy(b.c)}" width="${bw}" height="${Math.max(0,sy(0)-sy(b.c))}"/>`);if(o.labels)s.push(`<text x="${L+i*bw+bw/2}" y="${H-B+15}" text-anchor="middle">${esc(trunc(b.lab,Math.max(5,Math.floor(bw/6))))}</text>`)});
+  if(edges){const every=Math.ceil(edges.length/8);edges.forEach((e,i)=>{if(i%every===0)s.push(`<text x="${L+i*bw}" y="${H-B+15}" text-anchor="middle">${fmtTick(e)}</text>`)})}
+  if(curve){const pts=[];for(let i=0;i<=80;i++){const xv=edges[0]+(edges[edges.length-1]-edges[0])*i/80;pts.push(`${(L+(xv-edges[0])/st*bw).toFixed(1)},${sy(n*st*npdf(xv,m,sd)).toFixed(1)}`)}s.push(`<polyline class="ncurve" points="${pts.join(' ')}"/>`)}
+  s.push(`<line class="ax" x1="${L}" x2="${W-R}" y1="${sy(0)}" y2="${sy(0)}"/><line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${sy(0)}"/><text transform="translate(14 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">Frequency</text><text x="${(L+W-R)/2}" y="${H-8}" text-anchor="middle">${esc(trunc(o.xlab,60))}</text></svg>`);
+  return s.join('')}
+function boxStats(vals){const v=vals.map(o=>o.v),q1=S.pct(v,.25),md=S.pct(v,.5),q3=S.pct(v,.75),iqr=q3-q1,lo=q1-1.5*iqr,hi=q3+1.5*iqr;const inside=v.filter(x=>x>=lo&&x<=hi);
+  return{q1,md,q3,wl:Math.min(...inside),wh:Math.max(...inside),out:vals.filter(o=>o.v<lo||o.v>hi).map(o=>({...o,ext:o.v<q1-3*iqr||o.v>q3+3*iqr}))}}
+function boxSVG(groups,title,ylab){
+  const W=480,H=320,L=56,R=12,T=30,B=46,all=groups.flatMap(g=>g.vals.map(o=>o.v)),y=nice(S.min(all),S.max(all),6);
+  const sy=v=>T+(H-T-B)*(1-(v-y.a)/(y.b-y.a)),bw=(W-L-R)/groups.length;const s=[svgOpen(W,H,title),`<text class="ttl" x="${L}" y="16">${esc(title)}</text>`];
+  axesY(s,y,sy,L,R,W);
+  groups.forEach((g,i)=>{const b=boxStats(g.vals),cx=L+bw*(i+.5),w=Math.min(64,bw*.5);
+    s.push(`<line class="wh" x1="${cx}" x2="${cx}" y1="${sy(b.wh)}" y2="${sy(b.q3)}"/><line class="wh" x1="${cx}" x2="${cx}" y1="${sy(b.q1)}" y2="${sy(b.wl)}"/><line class="wh" x1="${cx-w/4}" x2="${cx+w/4}" y1="${sy(b.wh)}" y2="${sy(b.wh)}"/><line class="wh" x1="${cx-w/4}" x2="${cx+w/4}" y1="${sy(b.wl)}" y2="${sy(b.wl)}"/>`);
+    s.push(`<rect class="box" x="${cx-w/2}" y="${sy(b.q3)}" width="${w}" height="${Math.max(1,sy(b.q1)-sy(b.q3))}"/><line class="med" x1="${cx-w/2}" x2="${cx+w/2}" y1="${sy(b.md)}" y2="${sy(b.md)}"/>`);
+    const lab=b.out.length<=8;b.out.forEach(o=>{s.push(o.ext?`<text x="${cx}" y="${sy(o.v)+4}" text-anchor="middle">✱</text>`:`<circle class="oc" cx="${cx}" cy="${sy(o.v)}" r="3.2"/>`);if(lab)s.push(`<text x="${cx+7}" y="${sy(o.v)+4}">${o.id}</text>`)});
+    s.push(`<text x="${cx}" y="${H-B+16}" text-anchor="middle">${esc(trunc(g.label,Math.max(6,Math.floor(bw/6.5))))}</text>`)});
+  s.push(`<line class="ax" x1="${L}" x2="${L}" y1="${T}" y2="${H-B}"/><text transform="translate(14 ${(T+H-B)/2}) rotate(-90)" text-anchor="middle">${esc(trunc(ylab,40))}</text></svg>`);
+  return s.join('')}
+function catCounts(d,n){const v=vOf(d,n),x=valid(colOf(d,n)),vals=[...new Set(x)].sort((a,b)=>a-b);return vals.map(u=>({label:labOf(v,u),v:x.filter(t=>t===u).length}))}
+
+/* ---------- views ---------- */
+let tab='data',labelsOn=false,hlCol=null;
+function setTab(t,silent){tab=t;['data','var','out'].forEach(k=>{$('tab-'+k).setAttribute('aria-selected',k===t);({data:viewData,var:viewVar,out:viewOut})[k].hidden=k!==t});
+  $('vlabWrap').hidden=t!=='data';$('clearOut').hidden=t!=='out'||!outCount;
+  if(t==='data')renderData();if(t==='var')renderVar();if(!silent)record({proc:'tab',tab:t})}
+function renderData(){const d=ds();let h='<table class="grid"><thead><tr><th></th>'+d.vars.map(v=>`<th data-col="${esc(v.name)}" class="${v.name===hlCol?'new':''}">${esc(v.name)}</th>`).join('')+'</tr></thead><tbody>';
+  d.rows.forEach((r,i)=>{h+=`<tr><th>${i+1}</th>`+d.vars.map((v,j)=>{const x=r[j],lab=labelsOn&&v.values&&v.values[x]!=null;return `<td class="${lab?'lab':''}${v.name===hlCol?' new':''}">${esc(lab?v.values[x]:fs(x,v.dec))}</td>`}).join('')+'</tr>'});
+  viewData.innerHTML=h+'</tbody></table>';
+  if(hlCol){const th=viewData.querySelector(`th[data-col="${CSS.escape(hlCol)}"]`);if(th)viewData.scrollLeft=Math.max(0,th.offsetLeft-120)}}
+function renderVar(){const d=ds();let h='<table class="grid"><thead><tr><th></th><th>Name</th><th>Type</th><th>Decimals</th><th>Label</th><th>Values</th><th>Measure</th></tr></thead><tbody>';
+  d.vars.forEach((v,i)=>{const vals=v.values?Object.entries(v.values).map(([k,l])=>`{${k}, ${l}}`).join(' '):'None';
+    h+=`<tr><th>${i+1}</th><td class="txt">${esc(v.name)}</td><td class="txt">Numeric</td><td><input type="number" min="0" max="16" step="1" id="dec-${esc(v.name)}" data-v="${esc(v.name)}" value="${v.dec}" aria-label="Decimals for ${esc(v.name)}"></td><td class="txt">${esc(v.label)}</td><td class="txt">${esc(trunc(vals,60))}</td><td class="txt">${v.measure[0].toUpperCase()+v.measure.slice(1)}</td></tr>`});
+  viewVar.innerHTML=h+'</tbody></table><p class="note" style="padding:10px 12px">Decimals only change how values are shown in Data View. Raise it to 4 to see probabilities like .2627 instead of .26.</p>';
+  viewVar.querySelectorAll('input[data-v]').forEach(inp=>inp.addEventListener('change',()=>{const v=vOf(ds(),inp.dataset.v);v.dec=Math.max(0,Math.min(16,Math.round(+inp.value||0)));inp.value=v.dec;record({proc:'dec',vars:[v.name],dec:v.dec})}))}
+['data','var','out'].forEach(k=>$('tab-'+k).addEventListener('click',()=>setTab(k)));
+$('vlab').addEventListener('change',e=>{labelsOn=e.target.checked;renderData()});
+$('clearOut').addEventListener('click',()=>{emptyOut();setTab('out',true)});
+function openDS(name){cur=name;hlCol=null;$('spssTitle').textContent=`${name} [DataSet${name==='Rating.sav'?2:1}] · Practice Data Editor`;setTab('data',true);record({proc:'open'});addOutput('GET FILE',`<div class="syntax">GET FILE='${esc(name)}'.</div>`,false);renderTask(false)}
+
+/* ---------- dialogs ---------- */
+const back=$('dlgBack');let okFn=null,reopen=null,lastFocus=null;
+function openDlg(path,build){closeMenus();$('dlgTitle').textContent=path;const b=$('dlgBody');b.innerHTML='';$('dlgErr').textContent='';okFn=build(b).ok;reopen=()=>openDlg(path,build);
+  if(back.hidden)lastFocus=document.activeElement;back.hidden=false;setTimeout(()=>{const f=b.querySelector('button,input,textarea,select');if(f)f.focus()},0)}
+function closeDlg(){back.hidden=true;if(lastFocus&&lastFocus.focus)lastFocus.focus()}
+const showErr=m=>{$('dlgErr').textContent=m};
+$('dlgOK').addEventListener('click',()=>{try{okFn();closeDlg()}catch(e){showErr(e.message)}});
+$('dlgCancel').addEventListener('click',closeDlg);
+$('dlgReset').addEventListener('click',()=>reopen&&reopen());
+back.addEventListener('click',e=>{if(e.target===back)closeDlg()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!back.hidden)closeDlg();else closeMenus()}});
+
+function picker(root,targets,filter,onChange){
+  const d=ds(),all=d.vars.filter(filter||(()=>true)).map(v=>v.name),st={src:[...all],sel:null};targets.forEach(t=>st[t.key]=[]);
+  const wrap=el('div','vp'),left=el('div','tgt');left.innerHTML='<div class="tgt-h">Variables</div>';const srcBox=el('div','vlist');left.appendChild(srcBox);
+  const right=el('div','vcol'),boxes={};
+  targets.forEach(t=>{const g=el('div','tgt');g.innerHTML=`<div class="tgt-h"><span>${esc(t.label)}</span><button type="button" class="btn">Move ▸</button></div>`;const b=el('div','vlist small');g.appendChild(b);boxes[t.key]=b;
+    g.querySelector('button').addEventListener('click',()=>move(t));right.appendChild(g)});
+  function move(t){if(!st.sel){showErr('Select a variable in the Variables list first.');return}showErr('');if(t.max===1&&st[t.key].length){st.src.push(...st[t.key]);st[t.key]=[]}st.src=st.src.filter(x=>x!==st.sel);st[t.key].push(st.sel);st.sel=null;render();onChange&&onChange()}
+  function item(name,fn,sel,dbl){const v=vOf(d,name),b=el('button',sel?'sel':'');b.type='button';b.innerHTML=`<span class="ms" title="${v.measure}">${v.measure[0].toUpperCase()}</span><span>${esc(v.label||v.name)} [${esc(v.name)}]</span>`;b.addEventListener('click',fn);if(dbl)b.addEventListener('dblclick',dbl);return b}
+  function render(){srcBox.innerHTML='';all.filter(n=>st.src.includes(n)).forEach(n=>srcBox.appendChild(item(n,()=>{st.sel=st.sel===n?null:n;render()},st.sel===n,()=>{st.sel=n;move(targets[0])})));
+    targets.forEach(t=>{boxes[t.key].innerHTML='';st[t.key].forEach(n=>boxes[t.key].appendChild(item(n,()=>{st[t.key]=st[t.key].filter(x=>x!==n);st.src.push(n);render();onChange&&onChange()})))})}
+  wrap.append(left,right);root.appendChild(wrap);root.insertAdjacentHTML('beforeend','<p class="note" style="margin-top:-6px">Tap a variable, then <b>Move ▸</b>. Tap a moved variable to send it back.</p>');render();return st}
+
+/* Frequencies */
+const FSTATS=['Quartiles','Mean','Median','Mode','Std. deviation','Variance','Range','Minimum','Maximum','Skewness'];
+function dlgFreq(b){const st=picker(b,[{key:'vars',label:'Variable(s)'}]);
+  b.insertAdjacentHTML('beforeend',`<label class="cbx"><input type="checkbox" id="fq-tab" checked> Display frequency tables</label>
+  <fieldset><legend>Statistics…</legend><div class="opts-g">${FSTATS.map((s,i)=>`<label><input type="checkbox" id="fq-s${i}" data-s="${s}"> ${s}</label>`).join('')}</div></fieldset>
+  <fieldset><legend>Charts…</legend><div class="opts-g">${['None','Bar charts','Pie charts','Histograms'].map((s,i)=>`<label><input type="radio" name="fq-c" id="fq-c${i}" value="${i}"${i?'':' checked'}> ${s}</label>`).join('')}</div></fieldset>
+  <fieldset><legend>Bootstrap…</legend><div class="opts-g"><label><input type="checkbox" id="fq-bs"> Perform bootstrapping</label><label>Confidence level % <input type="number" id="fq-bl" value="95" min="50" max="99.9" step="any" style="width:80px"></label></div></fieldset>`);
+  return{ok(){if(!st.vars.length)throw Error('Move at least one variable into Variable(s).');const lvl=+$('fq-bl').value;if($('fq-bs').checked&&!(lvl>=50&&lvl<100))throw Error('Confidence level must be between 50 and 99.9.');
+    runFreq(st.vars,{tables:$('fq-tab').checked,stats:[...b.querySelectorAll('[data-s]')].filter(x=>x.checked).map(x=>x.dataset.s),chart:+b.querySelector('[name=fq-c]:checked').value,boot:$('fq-bs').checked,level:lvl})}}}
+function runFreq(vars,o){const d=ds(),cols=vars.map(n=>valid(colOf(d,n)));let h='';
+  const rows=[['N','Valid',...cols.map(x=>x.length)],['','Missing',...cols.map(x=>d.rows.length-x.length)]];let foot='';
+  const has=s=>o.stats.includes(s);
+  if(has('Mean'))rows.push(['Mean','',...cols.map(x=>fs(S.mean(x),4))]);
+  if(has('Median'))rows.push(['Median','',...cols.map(x=>fs(S.pct(x,.5),4))]);
+  if(has('Mode'))rows.push(['Mode','',...cols.map(x=>{const m=S.mode(x);if(m.multi)foot='a. Multiple modes exist. The smallest value is shown.';return fs(m.val,2)+(m.multi?'ᵃ':'')})]);
+  if(has('Std. deviation'))rows.push(['Std. Deviation','',...cols.map(x=>fs(S.sd(x),4))]);
+  if(has('Variance'))rows.push(['Variance','',...cols.map(x=>fs(S.var(x),4))]);
+  if(has('Skewness')){rows.push(['Skewness','',...cols.map(x=>fs(S.skew(x),3))]);rows.push(['Std. Error of Skewness','',...cols.map(x=>fs(S.seSkew(x.length),3))])}
+  if(has('Range'))rows.push(['Range','',...cols.map(x=>fs(S.max(x)-S.min(x),2))]);
+  if(has('Minimum'))rows.push(['Minimum','',...cols.map(x=>fs(S.min(x),2))]);
+  if(has('Maximum'))rows.push(['Maximum','',...cols.map(x=>fs(S.max(x),2))]);
+  if(has('Quartiles'))[25,50,75].forEach((p,i)=>rows.push([i?'':'Percentiles',String(p),...cols.map(x=>fs(S.pct(x,p/100),4))]));
+  h+=pivot('Statistics',['','',...vars.map(n=>vname(d,n))],rows,2)+(foot?`<p class="note">${foot}</p>`:'');
+  if(o.tables)vars.forEach(n=>{h+=freqTable(d,n,o)});
+  vars.forEach(n=>{const v=vOf(d,n);if(o.chart===1)h+=barSVG(catCounts(d,n),'Frequency',vname(d,n));if(o.chart===2)h+=pieSVG(catCounts(d,n),vname(d,n));if(o.chart===3)h+=histSVG(valid(colOf(d,n)),{title:vname(d,n),xlab:vname(d,n),labels:v.values,normal:false})});
+  if(o.boot)h+=`<p class="note">Bootstrap results are based on 1000 bootstrap samples, so the interval changes slightly every run.</p>`;
+  addOutput('Frequencies',h);record({proc:'freq',vars,opts:o,meta:vars.map(n=>vOf(d,n).bin||null)})}
+function freqTable(d,n,o){const v=vOf(d,n),all=colOf(d,n),x=valid(all),N=all.length,vals=[...new Set(x)].sort((a,b)=>a-b),cnt=vals.map(u=>x.filter(t=>t===u).length);
+  let boot=null;if(o.boot){const B=1000,a=(1-o.level/100)/2,res=vals.map(()=>[]);for(let b=0;b<B;b++){const c=new Map();for(let i=0;i<x.length;i++){const u=x[Math.floor(Math.random()*x.length)];c.set(u,(c.get(u)||0)+1)}vals.forEach((u,k)=>res[k].push(100*(c.get(u)||0)/x.length))}
+    boot=res.map(r=>{r.sort((p,q)=>p-q);return[r[Math.floor(a*B)],r[Math.min(B-1,Math.ceil((1-a)*B)-1)]]})}
+  let cum=0;let rows=vals.map((u,i)=>{const vp=100*cnt[i]/x.length;cum+=vp;const r=[i?'':'Valid',labOf(v,u),cnt[i],(100*cnt[i]/N).toFixed(1),vp.toFixed(1),cum.toFixed(1)];if(boot)r.push(boot[i][0].toFixed(1),boot[i][1].toFixed(1));return r});
+  let note='';if(rows.length>20){const extra=rows.length-10;rows=rows.slice(0,10);rows.push(['',`… ${extra} more rows`,'','','','',...(boot?['','']:[])]);note=`<p class="note">A scale variable gets one row per distinct value (${vals.length} here). For variables like this, untick <b>Display frequency tables</b> and use Statistics or Visual Binning instead.</p>`}
+  rows.push({c:['','Total',x.length,(100*x.length/N).toFixed(1),'100.0','',...(boot?['','']:[])],cls:'total'});
+  const head=['','','Frequency','Percent','Valid Percent','Cumulative Percent',...(boot?[`Bootstrap ${o.level}% CI Lower`,'Upper']:[])];
+  return pivot(vname(d,n),head,rows,2)+note}
+
+/* Descriptives */
+function dlgDesc(b){const st=picker(b,[{key:'vars',label:'Variable(s)'}]);const opts=['Mean','Std. deviation','Minimum','Maximum','Variance','Range','Skewness'];
+  b.insertAdjacentHTML('beforeend',`<fieldset><legend>Options…</legend><div class="opts-g">${opts.map((s,i)=>`<label><input type="checkbox" id="ds-o${i}" data-o="${s}"${i<4?' checked':''}> ${s}</label>`).join('')}</div></fieldset>`);
+  return{ok(){if(!st.vars.length)throw Error('Move at least one variable into Variable(s).');const d=ds(),sel=[...b.querySelectorAll('[data-o]')].filter(x=>x.checked).map(x=>x.dataset.o);
+    const F={Mean:x=>fs(S.mean(x),4),'Std. deviation':x=>fs(S.sd(x),4),Minimum:x=>fs(S.min(x),2),Maximum:x=>fs(S.max(x),2),Variance:x=>fs(S.var(x),3),Range:x=>fs(S.max(x)-S.min(x),2),Skewness:x=>fs(S.skew(x),3)};
+    const ord=['Range','Minimum','Maximum','Mean','Std. deviation','Variance','Skewness'].filter(s=>sel.includes(s));
+    const rows=st.vars.map(n=>{const x=valid(colOf(d,n));return[vname(d,n),x.length,...ord.map(s=>F[s](x))]});rows.push(['Valid N (listwise)',d.rows.filter(r=>st.vars.every(n=>r[vi(d,n)]!=null)).length,...ord.map(()=>'')]);
+    addOutput('Descriptives',pivot('Descriptive Statistics',['','N',...ord.map(s=>s==='Std. deviation'?'Std. Deviation':s)],rows));record({proc:'desc',vars:st.vars,opts:sel})}}}
+
+/* Explore */
+function groupsOf(d,n,fac){const i=vi(d,n),rows=d.rows.map((r,k)=>({v:r[i],id:k+1,r})).filter(o=>o.v!=null&&isFinite(o.v));if(!fac)return[{label:'',vals:rows}];
+  const fi=vi(d,fac),fv=vOf(d,fac),codes=[...new Set(rows.map(o=>o.r[fi]).filter(c=>c!=null))].sort((a,b)=>a-b);return codes.map(c=>({label:labOf(fv,c),vals:rows.filter(o=>o.r[fi]===c)}))}
+function dlgExplore(b){const st=picker(b,[{key:'dep',label:'Dependent List'},{key:'fac',label:'Factor List',max:1}]);
+  b.insertAdjacentHTML('beforeend',`<fieldset><legend>Statistics…</legend><div class="opts-g"><label>Confidence Interval for Mean % <input type="number" id="xp-l" value="95" min="50" max="99.9" step="any" style="width:80px"></label></div></fieldset>
+  <fieldset><legend>Display</legend><div class="opts-g">${['Both','Statistics','Plots'].map((s,i)=>`<label><input type="radio" name="xp-d" id="xp-d${i}" value="${s}"${i?'':' checked'}> ${s}</label>`).join('')}</div></fieldset>`);
+  return{ok(){if(!st.dep.length)throw Error('Move at least one variable into Dependent List.');const l=+$('xp-l').value;if(!(l>=50&&l<100))throw Error('The confidence level must be between 50 and 99.9.');
+    const disp=b.querySelector('[name=xp-d]:checked').value,d=ds(),fac=st.fac[0]||null;let h='';
+    st.dep.forEach(n=>{const gs=groupsOf(d,n,fac);
+      if(disp!=='Plots')gs.forEach(g=>{const x=g.vals.map(o=>o.v),N=x.length;if(N<4){h+=`<p class="note">${esc(g.label)}: too few cases for descriptives.</p>`;return}const m=S.mean(x),se=S.sd(x)/Math.sqrt(N),[lo,hi]=ciMean(x,l);
+        h+=pivot(`Descriptives: ${vname(d,n)}${fac?` · ${vname(d,fac)} = ${g.label}`:''}`,['','','Statistic','Std. Error'],[
+          ['Mean','',fs(m,4),fs(se,4)],[`${l}% Confidence Interval for Mean`,'Lower Bound',fs(lo,4),''],['','Upper Bound',fs(hi,4),''],['5% Trimmed Mean','',fs(S.trim5(x),4),''],['Median','',fs(S.pct(x,.5),4),''],
+          ['Variance','',fs(S.var(x),3),''],['Std. Deviation','',fs(S.sd(x),4),''],['Minimum','',fs(S.min(x),2),''],['Maximum','',fs(S.max(x),2),''],['Range','',fs(S.max(x)-S.min(x),2),''],
+          ['Interquartile Range','',fs(S.pct(x,.75)-S.pct(x,.25),4),''],['Skewness','',fs(S.skew(x),3),fs(S.seSkew(N),3)],['Kurtosis','',fs(S.kurt(x),3),fs(S.seKurt(N),3)]],2)});
+      if(disp!=='Statistics')h+=boxSVG(gs.map(g=>({label:g.label||vname(d,n),vals:g.vals})),vname(d,n)+(fac?` by ${vname(d,fac)}`:''),vname(d,n))+'<p class="note">○ = outlier (more than 1.5 × IQR from the box), ✱ = extreme (more than 3 × IQR). Numbers are case (row) numbers.</p>'});
+    addOutput('Explore',h);record({proc:'explore',vars:st.dep,factor:fac,level:l})}}}
+
+/* One-sample t test */
+function dlgT(b){const st=picker(b,[{key:'vars',label:'Test Variable(s)'}]);
+  b.insertAdjacentHTML('beforeend',`<div class="frow"><div class="field"><label for="tt-v">Test Value</label><input type="number" id="tt-v" value="0" step="any"></div><div class="field"><label for="tt-l">Options… Confidence Interval %</label><input type="number" id="tt-l" value="95" min="50" max="99.9" step="any"></div></div>`);
+  return{ok(){if(!st.vars.length)throw Error('Move at least one variable into Test Variable(s).');const tv=+$('tt-v').value,l=+$('tt-l').value;if(!isFinite(tv))throw Error('Enter a number for Test Value.');if(!(l>=50&&l<100))throw Error('The confidence level must be between 50 and 99.9.');
+    const d=ds(),r1=[],r2=[];st.vars.forEach(n=>{const x=valid(colOf(d,n)),N=x.length,m=S.mean(x),sd=S.sd(x),se=sd/Math.sqrt(N),t=(m-tv)/se,df=N-1,sig=2*(1-tcdf(Math.abs(t),df)),tc=tinv(1-(1-l/100)/2,df);
+      r1.push([vname(d,n),N,fs(m,4),fs(sd,4),fs(se,4)]);r2.push([vname(d,n),fs(t,3),df,sig<0.0005?'.000':fs(sig,3),fs(m-tv,4),fs(m-tv-tc*se,4),fs(m-tv+tc*se,4)])});
+    addOutput('T-Test',pivot('One-Sample Statistics',['','N','Mean','Std. Deviation','Std. Error Mean'],r1)+pivot(`One-Sample Test · Test Value = ${tv}`,['','t','df','Sig. (2-tailed)','Mean Difference',`${l}% CI of the Difference: Lower`,'Upper'],r2)+'<p class="note">With Test Value 0, the CI of the difference is the CI for the mean.</p>');
+    record({proc:'ttest',vars:st.vars,test:tv,level:l})}}}
+
+/* Graphs */
+function dlgBar(b){const st=picker(b,[{key:'cat',label:'Category Axis',max:1}]);
+  b.insertAdjacentHTML('beforeend',`<fieldset><legend>Bars Represent</legend><div class="opts-g"><label><input type="radio" name="br-r" id="br-n" value="n" checked> N of cases</label><label><input type="radio" name="br-r" id="br-p" value="p"> % of cases</label></div></fieldset>`);
+  return{ok(){if(!st.cat.length)throw Error('Move a variable into Category Axis.');const d=ds(),n=st.cat[0],pc=$('br-p').checked,c=catCounts(d,n),tot=c.reduce((a,x)=>a+x.v,0);if(c.length>30)throw Error('This variable has too many distinct values for a bar chart. Use a categorical variable.');
+    addOutput('Graph',barSVG(pc?c.map(x=>({label:x.label,v:100*x.v/tot})):c,pc?'Percent':'Count',vname(d,n)));record({proc:'bar',vars:[n]})}}}
+function dlgPie(b){const st=picker(b,[{key:'cat',label:'Define Slices by',max:1}]);
+  return{ok(){if(!st.cat.length)throw Error('Move a variable into Define Slices by.');const d=ds(),n=st.cat[0],c=catCounts(d,n);if(c.length>12)throw Error('This variable has too many distinct values for a pie chart. Use a categorical variable with few classes.');
+    addOutput('Graph',pieSVG(c,vname(d,n)));record({proc:'pie',vars:[n]})}}}
+function dlgHist(b){const st=picker(b,[{key:'v',label:'Variable',max:1}]);
+  b.insertAdjacentHTML('beforeend',`<label class="cbx"><input type="checkbox" id="hs-n"> Display normal curve</label>`);
+  return{ok(){if(!st.v.length)throw Error('Move a variable into Variable.');const d=ds(),n=st.v[0],v=vOf(d,n);addOutput('Graph',histSVG(valid(colOf(d,n)),{title:vname(d,n),xlab:vname(d,n),labels:v.values,normal:$('hs-n').checked}));record({proc:'hist',vars:[n]})}}}
+function dlgBox(b){const st=picker(b,[{key:'v',label:'Variable',max:1},{key:'cat',label:'Category Axis',max:1}]);
+  return{ok(){if(!st.v.length)throw Error('Move a variable into Variable.');const d=ds(),n=st.v[0],fac=st.cat[0]||null;addOutput('Graph',boxSVG(groupsOf(d,n,fac).map(g=>({label:g.label||vname(d,n),vals:g.vals})),vname(d,n)+(fac?` by ${vname(d,fac)}`:''),vname(d,n)));record({proc:'box',vars:[n],factor:fac})}}}
+
+/* Compute Variable */
+const FUNCS={'CDF.BINOM':[3,'q, n, prob',bcdf],'PDF.BINOM':[3,'q, n, prob',bpdf],'CDF.NORMAL':[3,'q, mean, stddev',ncdf],'PDF.NORMAL':[3,'q, mean, stddev',npdf],'IDF.NORMAL':[3,'prob, mean, stddev',ninv],
+  'CDF.UNIFORM':[3,'q, min, max',ucdf],'PDF.UNIFORM':[3,'q, min, max',updf],'SQRT':[1,'x',Math.sqrt],'ABS':[1,'x',Math.abs],'LN':[1,'x',Math.log],'EXP':[1,'x',Math.exp],'RND':[1,'x',Math.round]};
+function parse(src,d){const s=src,toks=[];let i=0;
+  while(i<s.length){const c=s[i];if(/\s/.test(c)){i++;continue}
+    if(/[0-9]/.test(c)||(c==='.'&&/[0-9]/.test(s[i+1]||''))){let j=i;while(j<s.length&&/[0-9.]/.test(s[j]))j++;if(/[eE]/.test(s[j]||'')&&/[-+0-9]/.test(s[j+1]||'')){j++;if(/[-+]/.test(s[j]))j++;while(/[0-9]/.test(s[j]||''))j++}const v=Number(s.slice(i,j));if(!isFinite(v))throw Error(`"${s.slice(i,j)}" is not a valid number.`);toks.push({t:'n',v});i=j;continue}
+    if(/[A-Za-z_$#@]/.test(c)){let j=i;while(j<s.length&&/[A-Za-z0-9_.$#@]/.test(s[j]))j++;toks.push({t:'id',v:s.slice(i,j).toUpperCase()});i=j;continue}
+    if(s.startsWith('**',i)){toks.push({t:'op',v:'**'});i+=2;continue}
+    if('+-*/(),'.includes(c)){toks.push({t:'op',v:c});i++;continue}
+    if(c==='^')throw Error('SPSS uses ** for powers, not ^. Example: 2**3.');
+    throw Error(`The expression has a character SPSS does not accept: "${c}".`)}
+  if(!toks.length)throw Error('Type a Numeric Expression first, e.g. CDF.BINOM(3,5,0.2).');
+  let p=0;const pk=()=>toks[p];
+  const eat=v=>{if(!toks[p]||toks[p].v!==v)throw Error(`Expected "${v}"${toks[p]?` but found "${toks[p].v}"`:' at the end'}. Check your brackets and commas.`);p++};
+  function expr(){let l=term();while(pk()&&(pk().v==='+'||pk().v==='-')){const o=toks[p++].v;l={o,l,r:term()}}return l}
+  function term(){let l=unary();while(pk()&&(pk().v==='*'||pk().v==='/')){const o=toks[p++].v;l={o,l,r:unary()}}return l}
+  function unary(){if(pk()&&pk().v==='-'){p++;return{o:'neg',l:unary()}}if(pk()&&pk().v==='+'){p++;return unary()}return power()}
+  function power(){const b=atom();if(pk()&&pk().v==='**'){p++;return{o:'**',l:b,r:unary()}}return b}
+  function atom(){const t=toks[p++];if(!t)throw Error('The expression ends too early. Something is missing after the last operator.');
+    if(t.t==='n')return{n:t.v};if(t.v==='('){const e=expr();eat(')');return e}
+    if(t.t==='id'){if(pk()&&pk().v==='('){p++;const args=[];if(pk()&&pk().v!==')'){args.push(expr());while(pk()&&pk().v===','){p++;args.push(expr())}}eat(')');
+        const f=FUNCS[t.v];if(!f)throw Error(`SPSS has no function called ${t.v} in this lab. Check the spelling, e.g. CDF.BINOM, PDF.BINOM, CDF.NORMAL or CDF.UNIFORM.`);
+        if(f[0]!==args.length)throw Error(`${t.v} needs ${f[0]} argument${f[0]>1?'s':''}: ${t.v}(${f[1]}).`);return{f:t.v,args}}
+      if(vi(d,t.v)<0)throw Error(`There is no variable called ${t.v} in ${cur}.`);return{v:t.v}}
+    throw Error(`"${t.v}" is in the wrong place.`)}
+  const ast=expr();if(p<toks.length)throw Error(`Unexpected "${toks[p].v}" after the end of the expression. A comma or operator may be missing.`);return ast}
+function evalAst(a,row,d){if('n' in a)return a.n;if(a.v){const x=row[vi(d,a.v)];return x==null?NaN:x}
+  if(a.f)return FUNCS[a.f][2](...a.args.map(x=>evalAst(x,row,d)));
+  const l=evalAst(a.l,row,d);if(a.o==='neg')return -l;const r=evalAst(a.r,row,d);
+  return a.o==='+'?l+r:a.o==='-'?l-r:a.o==='*'?l*r:a.o==='/'?(r===0?NaN:l/r):l**r}
+const usesVar=a=>!!(a.v||(a.args&&a.args.some(usesVar))||(a.l&&usesVar(a.l))||(a.r&&usesVar(a.r)));
+function dlgCompute(b){const d=ds();
+  b.innerHTML=`<div class="frow"><div class="field"><label for="cp-t">Target Variable</label><input id="cp-t" value="p1" autocomplete="off" spellcheck="false"></div></div>
+  <div class="field"><label for="cp-e">Numeric Expression</label><textarea id="cp-e" rows="3" spellcheck="false" autocapitalize="off" autocomplete="off"></textarea></div>
+  <fieldset><legend>Function group: CDF &amp; PDF · tap to insert</legend><div class="fn-btns">${['CDF.BINOM(?,?,?)','PDF.BINOM(?,?,?)','CDF.NORMAL(?,?,?)','IDF.NORMAL(?,?,?)','CDF.UNIFORM(?,?,?)','SQRT(?)'].map(f=>`<button type="button" class="btn" data-ins="${f}">${f.replace(/\(.*/,'')}</button>`).join('')}${['1 - ','-','*','/','(',')',','].map(o=>`<button type="button" class="btn" data-ins="${o}">${o.trim()||o}</button>`).join('')}</div></fieldset>
+  <fieldset><legend>Variables · tap to insert</legend><div class="fn-btns">${d.vars.map(v=>`<button type="button" class="btn" data-ins="${esc(v.name)}">${esc(v.name)}</button>`).join('')}</div></fieldset>
+  <p class="note">CDF.BINOM(q,n,p) = P(X ≤ q) · PDF.BINOM(q,n,p) = P(X = q) · CDF.NORMAL(q,mean,sd) = P(X &lt; q) · CDF.UNIFORM(q,min,max) = P(X &lt; q). In real SPSS, replace each ? with a number.</p>`;
+  const ta=$('cp-e');b.querySelectorAll('[data-ins]').forEach(x=>x.addEventListener('click',()=>{const t=x.dataset.ins;const s=ta.selectionStart??ta.value.length,e=ta.selectionEnd??s;ta.setRangeText(t,s,e,'end');const q=ta.value.indexOf('?');if(q>=0){ta.setSelectionRange(q,q+1)}ta.focus()}));
+  return{ok(){const name=$('cp-t').value.trim().toUpperCase();if(!/^[A-Z@#$][A-Z0-9_.@#$]{0,63}$/.test(name))throw Error('Target Variable must start with a letter and use only letters, numbers and _ (e.g. p1).');
+    const src=$('cp-e').value;if(src.includes('?'))throw Error('Replace each ? with a number before you press OK.');const ast=parse(src,d);
+    const vals=d.rows.map(r=>{const v=evalAst(ast,r,d);return isFinite(v)?v:null});
+    let i=vi(d,name),note='';if(i<0){d.vars.push(V(name,'','scale',2));d.rows.forEach((r,k)=>r.push(vals[k]))}else{if(d.vars[i].values)throw Error(`${name} is a categorical variable in this file. Choose another target name.`);note=`<p class="note">${name} already existed, so its values were replaced.</p>`;d.rows.forEach((r,k)=>r[i]=vals[k])}
+    const first=vals.find(v=>v!=null);
+    addOutput('Compute Variable',`<div class="syntax">COMPUTE ${esc(name)}=${esc(src.trim())}.\nEXECUTE.</div>${note}<p class="note">${usesVar(ast)?`New values were calculated for each of the ${d.rows.length} cases.`:`The expression has no variables, so every case gets the same value. That is why real SPSS needs at least one row of data before Compute works.`} The result is in Data View in the column <b>${esc(name)}</b>.${vals.every(v=>v==null)?' Every result is system-missing (.), so check the function\'s arguments.':''}</p>`,false);
+    hlCol=name;setTab('data',true);record({proc:'compute',target:name,expr:src,value:first==null?NaN:first,constant:!usesVar(ast)})}}}
+
+/* Visual Binning */
+function dlgBin(b){let info=null;const d=ds();
+  const st=picker(b,[{key:'v',label:'Variables to Bin',max:1}],v=>v.measure==='scale'&&v.name!=='ID'&&!v.bin,()=>scan());
+  b.insertAdjacentHTML('beforeend',`<p class="note" id="bn-scan">Move a scale variable into Variables to Bin to scan it.</p>
+  <div class="frow"><div class="field"><label for="bn-name">Binned Variable name</label><input id="bn-name" autocomplete="off" spellcheck="false"></div></div>
+  <fieldset><legend>Make Cutpoints… · Equal Width Intervals</legend><div class="frow">
+    <div class="field"><label for="bn-first">First Cutpoint Location</label><input type="number" id="bn-first" step="any"></div>
+    <div class="field"><label for="bn-n">Number of Cutpoints</label><input type="number" id="bn-n" step="1" min="1" max="20"></div>
+    <div class="field"><label for="bn-w">Width</label><input type="number" id="bn-w" step="any"></div></div>
+    <p class="note" id="bn-prev">Enter the first cutpoint and the number of cutpoints. Width fills in, as in SPSS.</p></fieldset>
+  <label class="cbx"><input type="checkbox" id="bn-lab" checked> Make Labels</label>`);
+  function scan(){if(!st.v.length){info=null;$('bn-scan').textContent='Move a scale variable into Variables to Bin to scan it.';return}const n=st.v[0],x=valid(colOf(d,n)),v=vOf(d,n);info={n,min:S.min(x),max:S.max(x),dec:v.dec};
+    $('bn-scan').textContent=`Scanned ${x.length} cases of ${n}: Minimum ${info.min.toFixed(info.dec)}, Maximum ${info.max.toFixed(info.dec)}.`;$('bn-name').value=n.toLowerCase()+'_cat';auto()}
+  function cuts(){const f=+$('bn-first').value,n=Math.round(+$('bn-n').value),w=+$('bn-w').value;return Array.from({length:n},(_,i)=>+(f+i*w).toFixed(8))}
+  function auto(){if(!info)return;const f=$('bn-first').value,n=+$('bn-n').value;if(f!==''&&n>=1)$('bn-w').value=+((info.max-(+f))/n).toFixed(Math.max(info.dec,2));prev()}
+  function prev(){if(!info||$('bn-first').value===''||!(+$('bn-n').value>=1)||!(+$('bn-w').value>0))return;const c=cuts();$('bn-prev').textContent=`Cutpoints: ${c.map(v=>v.toFixed(info.dec)).join(', ')}. That makes ${c.length+1} classes, and the last cutpoint is ${c[c.length-1].toFixed(info.dec)}.`}
+  ['bn-first','bn-n'].forEach(id=>$(id).addEventListener('input',auto));$('bn-w').addEventListener('input',prev);
+  return{ok(){if(!info)throw Error('Move a variable into Variables to Bin.');const name=$('bn-name').value.trim().toUpperCase();if(!/^[A-Z@#$][A-Z0-9_.@#$]{0,63}$/.test(name))throw Error('The binned variable name must start with a letter and use only letters, numbers and _.');
+    if(vi(d,name)>=0)throw Error(`${name} already exists. Choose another name.`);if($('bn-first').value==='')throw Error('Enter the First Cutpoint Location.');const n=Math.round(+$('bn-n').value),w=+$('bn-w').value;
+    if(!(n>=1&&n<=20))throw Error('Number of Cutpoints must be between 1 and 20.');if(!(w>0))throw Error('Width must be greater than 0.');
+    const c=cuts(),dec=info.dec,step=10**-dec,labels={},mk=$('bn-lab').checked;
+    for(let k=0;k<=c.length;k++)labels[k+1]=!mk?String(k+1):k===0?`<= ${c[0].toFixed(dec)}`:k===c.length?`${(c[k-1]+step).toFixed(dec)}+`:`${(c[k-1]+step).toFixed(dec)} - ${c[k].toFixed(dec)}`;
+    const si=vi(d,info.n),nv=V(name,`${vname(d,info.n)} (Binned)`,'ordinal',0,mk?labels:null);nv.bin={src:info.n,first:c[0],n,width:w};d.vars.push(nv);
+    d.rows.forEach(r=>{const x=r[si];if(x==null){r.push(null);return}let k=c.findIndex(t=>x<=t+1e-9);r.push(k<0?c.length+1:k+1)});
+    addOutput('Visual Binning',pivot(`Binned Variables: ${name}`,['','Value','Label','Upper Endpoint'],Object.keys(labels).map((k,i)=>[i?'':'Bins',k,labels[k],i<c.length?`<= ${c[i].toFixed(dec)}`:'(highest)'])) +`<p class="note">New variable ${esc(name)} was added. Now run Analyze ▸ Descriptive Statistics ▸ Frequencies on it to get the frequency distribution.</p>`);
+    record({proc:'bin',vars:[info.n],target:name,first:c[0],n,width:w})}}}
+
+/* ---------- menus ---------- */
+const MENUS=[
+  ['File',[{items:[['Open company-sales.sav',()=>openDS('company-sales.sav')],['Open Rating.sav',()=>openDS('Rating.sav')],['Reload original data',()=>{DS=makeDS();hlCol=null;setTab('data',true);addOutput('Reload',`<p class="note">Both files were reloaded. New variables you made are gone.</p>`,false)}]]}]],
+  ['Transform',[{items:[['Compute Variable…',()=>openDlg('Transform ▸ Compute Variable',dlgCompute)],['Visual Binning…',()=>openDlg('Transform ▸ Visual Binning',dlgBin)]]}]],
+  ['Analyze',[{g:'Descriptive Statistics',items:[['Frequencies…',()=>openDlg('Analyze ▸ Descriptive Statistics ▸ Frequencies',dlgFreq)],['Descriptives…',()=>openDlg('Analyze ▸ Descriptive Statistics ▸ Descriptives',dlgDesc)],['Explore…',()=>openDlg('Analyze ▸ Descriptive Statistics ▸ Explore',dlgExplore)]]},{g:'Compare Means',items:[['One-Sample T Test…',()=>openDlg('Analyze ▸ Compare Means ▸ One-Sample T Test',dlgT)]]}]],
+  ['Graphs',[{g:'Legacy Dialogs',items:[['Bar…  (Simple)',()=>openDlg('Graphs ▸ Legacy Dialogs ▸ Bar ▸ Simple',dlgBar)],['Pie…',()=>openDlg('Graphs ▸ Legacy Dialogs ▸ Pie',dlgPie)],['Histogram…',()=>openDlg('Graphs ▸ Legacy Dialogs ▸ Histogram',dlgHist)],['Boxplot…  (Simple)',()=>openDlg('Graphs ▸ Legacy Dialogs ▸ Boxplot ▸ Simple',dlgBox)]]}]]];
+const menuBar=$('menus');
+MENUS.forEach(([name,groups],mi)=>{const w=el('div',mi>=2?'r':'');const btn=el('button','mbtn');btn.type='button';btn.textContent=name;btn.setAttribute('aria-expanded','false');btn.setAttribute('aria-haspopup','true');
+  const drop=el('div','mdrop');drop.hidden=true;drop.setAttribute('role','menu');
+  groups.forEach(g=>{if(g.g){const h=el('div','grp');h.textContent=g.g+' ▸';drop.appendChild(h)}g.items.forEach(([t,fn])=>{const b=el('button',g.g?'':'top');b.type='button';b.setAttribute('role','menuitem');b.textContent=t;b.addEventListener('click',()=>{closeMenus();fn()});drop.appendChild(b)})});
+  btn.addEventListener('click',e=>{e.stopPropagation();const open=drop.hidden;closeMenus();if(open){drop.hidden=false;btn.setAttribute('aria-expanded','true');const f=drop.querySelector('button');if(f)f.focus()}});
+  w.append(btn,drop);menuBar.appendChild(w)});
+function closeMenus(){menuBar.querySelectorAll('.mdrop').forEach(d=>d.hidden=true);menuBar.querySelectorAll('.mbtn').forEach(b=>b.setAttribute('aria-expanded','false'))}
+document.addEventListener('click',e=>{if(!menuBar.contains(e.target))closeMenus()});
+
+/* ---------- exercises ---------- */
+const O=makeDS(),CS='company-sales.sav',RT='Rating.sav';
+const oc=(f,n)=>valid(colOf(O[f],n));
+const hasVar=(r,n)=>!!(r.vars&&r.vars.includes(n));
+const near=(a,b,t)=>Math.abs(a-b)<=t;
+const pctOf=(f,n,code)=>{const x=oc(f,n);return 100*x.filter(v=>v===code).length/x.length};
+const topMedian=()=>{const g=groupsOf(O[CS],'SALES','SECTOR');let best=g[0];g.forEach(x=>{if(S.pct(x.vals.map(o=>o.v),.5)>S.pct(best.vals.map(o=>o.v),.5))best=x});return best.label};
+const EX=[
+ {t:'Variable View',ds:CS,do:'Switch to the Variable View tab and look at the Measure column.',hint:'Click the Variable View tab above the data.',done:r=>r.proc==='tab'&&r.tab==='var',q:'Which Measure level does SECTOR have?',type:'choice',opts:['Nominal','Ordinal','Scale'],a:'Nominal',why:'Sector categories have no natural order, so they are nominal.'},
+ {t:'Rating frequency table',ds:RT,do:'Open Rating.sav and make a frequency table of the customer rating.',hint:'File ▸ Open Rating.sav. Then Analyze ▸ Descriptive Statistics ▸ Frequencies, and move Customer rating into Variable(s).',done:r=>r.proc==='freq'&&r.ds===RT&&hasVar(r,'RATING'),q:'What percent of customers rated the product Good?',type:'num',a:()=>60,tol:.05,pct:true,why:'6 of the 10 ratings are Good, which is 60%.'},
+ {t:'Location table',ds:CS,do:'Homework 1, Q1: make a frequency table of company location.',hint:'Analyze ▸ Descriptive Statistics ▸ Frequencies, then move Location.',done:r=>r.proc==='freq'&&r.ds===CS&&hasVar(r,'LOCATION'),q:'What percent of companies are in Greater Cairo?',type:'num',a:()=>pctOf(CS,'LOCATION',1),tol:.05,pct:true,why:'162 of 300 companies, so 54%. Outside Cairo is 46%.'},
+ {t:'Bar chart of sector',ds:CS,do:'Draw a simple bar chart of Sector.',hint:'Graphs ▸ Legacy Dialogs ▸ Bar, then move Sector into Category Axis. Frequencies ▸ Charts ▸ Bar charts also works.',done:r=>r.ds===CS&&((r.proc==='bar'&&hasVar(r,'SECTOR'))||(r.proc==='freq'&&hasVar(r,'SECTOR')&&r.opts.chart===1)),q:'Which sector has the fewest companies?',type:'choice',opts:['It','Constructions','Agriculture','Others'],a:'It',why:'IT has 62 companies (20.7%). Others is the largest with 96 (32%).'},
+ {t:'Pie chart of location',ds:CS,do:'Homework 1, Q2: draw a pie chart of Location.',hint:'Graphs ▸ Legacy Dialogs ▸ Pie, then move Location into Define Slices by.',done:r=>r.ds===CS&&((r.proc==='pie'&&hasVar(r,'LOCATION'))||(r.proc==='freq'&&hasVar(r,'LOCATION')&&r.opts.chart===2)),q:'Why is a pie chart a good choice here?',type:'choice',opts:['It has few classes and we compare percentages','The variable is continuous','It shows outliers'],a:'It has few classes and we compare percentages'},
+ {t:'Statistics for sales',ds:CS,do:'Get the standard deviation of Sales without printing a 300-row table.',hint:'Analyze ▸ Descriptive Statistics ▸ Frequencies. Move Sales, untick Display frequency tables, and tick Std. deviation.',done:r=>r.ds===CS&&r.proc==='freq'&&hasVar(r,'SALES')&&r.opts.stats.includes('Std. deviation'),q:'What is the standard deviation of Sales? (2 decimals)',type:'num',a:()=>S.sd(oc(CS,'SALES')),tol:.006},
+ {t:'Histogram of average age',ds:CS,do:'Homework 1, Q4: draw a histogram of Average age in the company.',hint:'Graphs ▸ Legacy Dialogs ▸ Histogram, then move Average age into Variable.',done:r=>r.ds===CS&&((r.proc==='hist'&&hasVar(r,'AVERGAE'))||(r.proc==='freq'&&hasVar(r,'AVERGAE')&&r.opts.chart===3)),q:'What is the shape of the distribution?',type:'choice',opts:['Slightly skewed to the left (negative)','Skewed to the right (positive)','Flat (uniform)'],a:'Slightly skewed to the left (negative)',why:'The left tail is longer and skewness is about −0.45.'},
+ {t:'Bin sales into 5 classes',ds:CS,do:'Use Visual Binning on Sales with first cutpoint 20 and 4 cutpoints. Then make a frequency table of the new variable.',hint:'Transform ▸ Visual Binning. Move Sales, then enter First Cutpoint 20 and Number of Cutpoints 4. Press OK. Then run Analyze ▸ Descriptive Statistics ▸ Frequencies on sales_cat.',done:r=>r.ds===CS&&r.proc==='freq'&&(r.meta||[]).some(m=>m&&m.src==='SALES'&&near(m.first,20,1e-9)&&m.n===4),q:'What percent of companies are in the 20.01 – 30.42 class?',type:'num',a:()=>16,tol:.05,pct:true,why:'This matches the slide: 48 of 300 companies.'},
+ {t:'Box plot by sector',ds:CS,do:'Use Explore to compare Sales across sectors with box plots.',hint:'Analyze ▸ Descriptive Statistics ▸ Explore. Move Sales into Dependent List and Sector into Factor List.',done:r=>r.ds===CS&&r.proc==='explore'&&hasVar(r,'SALES')&&r.factor==='SECTOR',q:'Which sector has the highest median sales?',type:'choice',opts:['It','Constructions','Agriculture','Others'],a:()=>topMedian(),why:'The thick line inside each box is the median. You can also read it in each Descriptives table.'},
+ {t:'IQR of employees',ds:CS,do:'Run Explore on Number of Employees and look for outliers in the box plot.',hint:'Analyze ▸ Descriptive Statistics ▸ Explore, then move Number of Employees into Dependent List.',done:r=>r.ds===CS&&r.proc==='explore'&&hasVar(r,'EMPLOYEE'),q:'What is the interquartile range?',type:'num',a:()=>{const x=oc(CS,'EMPLOYEE');return S.pct(x,.75)-S.pct(x,.25)},tol:.01,why:'IQR = Q3 − Q1. Circles above the top whisker are companies with unusually many employees.'},
+ {t:'95% CI for mean sales',ds:CS,do:'Get the 95% confidence interval for mean Sales.',hint:'Analyze ▸ Descriptive Statistics ▸ Explore, then move Sales. Keep the level at 95. Read the interval in the Descriptives table.',done:r=>r.ds===CS&&((r.proc==='explore'&&hasVar(r,'SALES')&&near(r.level,95,1e-9))||(r.proc==='ttest'&&hasVar(r,'SALES')&&near(r.level,95,1e-9)&&r.test===0)),q:'What is the lower bound? (2 decimals)',type:'num',a:()=>ciMean(oc(CS,'SALES'),95)[0],tol:.006,why:'"We are 95% confident the mean sales of all companies is between £38.51k and £40.63k."'},
+ {t:'99% CI for mean sales',ds:CS,do:'Repeat with a 99% confidence level.',hint:'Explore again, with the confidence interval for the mean set to 99.',done:r=>r.ds===CS&&(r.proc==='explore'||r.proc==='ttest')&&hasVar(r,'SALES')&&near(r.level,99,1e-9),q:'What is the upper bound? (2 decimals)',type:'num',a:()=>ciMean(oc(CS,'SALES'),99)[1],tol:.006,why:'A higher confidence level gives a wider interval.'},
+ {t:'Proportion in Cairo',ds:CS,do:'Run Frequencies on Location with bootstrapping switched on.',hint:'Analyze ▸ Descriptive Statistics ▸ Frequencies. Move Location, then tick Perform bootstrapping.',done:r=>r.ds===CS&&r.proc==='freq'&&hasVar(r,'LOCATION')&&r.opts.boot,q:'What is the point estimate of the proportion of companies in Greater Cairo?',type:'num',a:()=>.54,tol:.005,frac:true,why:'p = 162 / 300 = 0.54. The bootstrap columns give the confidence interval, about 48% to 60%.'},
+ {t:'Binomial: late flights',ds:CS,do:'Five flights, each late with probability 0.2. Compute the probability that at least two are late, into a new variable p1.',hint:'Transform ▸ Compute Variable. Target p1, expression 1 - CDF.BINOM(1,5,0.2). Then in Variable View set Decimals for p1 to 4.',done:r=>r.proc==='compute'&&near(r.value,1-bcdf(1,5,.2),5e-5),q:'What value does p1 have? (4 decimals)',type:'num',a:()=>1-bcdf(1,5,.2),tol:6e-5,why:'At least 2 = 1 − P(X ≤ 1). Data View shows .26 until you raise Decimals to 4.'},
+ {t:'Binomial: all 15 TVs',ds:CS,do:'Homework 2: 90% of homes have a large-screen TV. In a sample of 15, compute the probability that all 15 have one.',hint:'Transform ▸ Compute Variable, then PDF.BINOM(15,15,0.9).',done:r=>r.proc==='compute'&&near(r.value,bpdf(15,15,.9),5e-5),q:'Probability? (4 decimals)',type:'num',a:()=>bpdf(15,15,.9),tol:6e-5},
+ {t:'Normal: IRS refunds',ds:CS,do:'Homework 3: refunds are normal with mean 2878 and SD 520. Compute the probability that a refund is more than 3500.',hint:'Transform ▸ Compute Variable, then 1 - CDF.NORMAL(3500,2878,520).',done:r=>r.proc==='compute'&&near(r.value,1-ncdf(3500,2878,520),5e-5),q:'Probability? (4 decimals)',type:'num',a:()=>1-ncdf(3500,2878,520),tol:6e-5,why:'About 11.58% of refunds are above $3500.'},
+ {t:'Normal: between two values',ds:CS,do:'X is normal with mean 80 and SD 10. Compute P(75 < X < 90).',hint:'Transform ▸ Compute Variable, then CDF.NORMAL(90,80,10) - CDF.NORMAL(75,80,10).',done:r=>r.proc==='compute'&&near(r.value,ncdf(90,80,10)-ncdf(75,80,10),5e-5),q:'Probability? (4 decimals)',type:'num',a:()=>ncdf(90,80,10)-ncdf(75,80,10),tol:6e-5},
+ {t:'Uniform: service wait',ds:CS,do:'Homework 3: wait time is uniform between 30 and 120 minutes. Compute the probability of waiting at least 60 minutes.',hint:'Transform ▸ Compute Variable, then 1 - CDF.UNIFORM(60,30,120).',done:r=>r.proc==='compute'&&near(r.value,1-ucdf(60,30,120),5e-5),q:'Probability? (4 decimals)',type:'num',a:()=>1-ucdf(60,30,120),tol:6e-5}
+];
+let act=Number.isInteger(store.act)&&store.act>=0&&store.act<EX.length?store.act:0;
+const val=x=>typeof x==='function'?x():x;
+function renderList(){const done=EX.filter((_,i)=>store.ex[i]).length;$('exProg').textContent=`${done} of ${EX.length} done`;
+  $('exList').innerHTML=EX.map((e,i)=>`<button type="button" class="ex-chip${store.ex[i]?' done':''}" aria-pressed="${i===act}" data-i="${i}"><span class="num">${store.ex[i]?'✓':i+1}</span>${esc(e.t)}</button>`).join('');
+  $('exList').querySelectorAll('[data-i]').forEach(b=>b.addEventListener('click',()=>select(+b.dataset.i)))}
+function select(i){act=i;store.act=i;save();renderList();renderTask(true)}
+function renderTask(full){const e=EX[act],did=runs.some(r=>{try{return e.done(r)}catch(_){return false}}),t=$('task');
+  const statusHTML=did?'<span class="status ok">✓ Done in the lab. Now answer the question.</span>':`<span class="status">Waiting for you to do this in the lab${e.ds!==cur?` · this uses ${esc(e.ds)} <button type="button" class="btn" id="tOpen">Open ${esc(e.ds)}</button>`:''}</span>`;
+  if(!full&&t.dataset.i===String(act)){$('tStat').innerHTML=statusHTML;bindOpen();return}
+  t.dataset.i=act;
+  t.innerHTML=`<div class="task-h"><b>Exercise ${act+1} of ${EX.length}: ${esc(e.t)}</b><span class="note">Data: ${esc(e.ds)}</span></div>
+  <div class="task-b"><p>${esc(e.do)}</p><div id="tStat">${statusHTML}</div>
+  <details><summary>Show the menu path</summary><p>${esc(e.hint)}</p></details>
+  <div class="answer"><label for="tAns"><b>${esc(e.q)}</b></label>${e.type==='choice'?`<div class="opts">${e.opts.map((o,k)=>`<button type="button" data-k="${k}">${esc(o)}</button>`).join('')}</div>`:`<div class="row2"><input id="tAns" inputmode="decimal" autocomplete="off" placeholder="${e.pct?'e.g. 54':'e.g. .2627'}"><button type="button" class="btn primary" id="tCheck">Check</button></div>`}
+  <div class="fb" id="tFb" aria-live="polite">${store.ex[act]?'<span class="ok">✓ You already answered this one correctly.</span>':''}</div></div>
+  <div class="task-nav"><button type="button" class="btn" id="tPrev"${act?'':' disabled'}>‹ Previous</button><button type="button" class="btn" id="tNext"${act<EX.length-1?'':' disabled'}>Next exercise ›</button></div></div>`;
+  bindOpen();
+  $('tPrev').addEventListener('click',()=>select(Math.max(0,act-1)));$('tNext').addEventListener('click',()=>select(Math.min(EX.length-1,act+1)));
+  const fb=$('tFb');
+  const right=()=>{fb.className='fb ok';fb.textContent='✓ Correct. '+(e.why||'');store.ex[act]=true;save();renderList()};
+  const wrong=m=>{fb.className='fb no';fb.textContent=m};
+  if(e.type==='choice')t.querySelectorAll('.opts [data-k]').forEach(b=>b.addEventListener('click',()=>{const pick=e.opts[+b.dataset.k];pick===val(e.a)?right():wrong(did?'Not quite. Look at the output again.':'Not quite. Try doing it in the lab first, then read the output.')}));
+  else{const chk=()=>{let s=$('tAns').value.replace(/[%,\s]/g,'');if(s===''){wrong('Type a number first.');return}let v=Number(s);if(!isFinite(v)){wrong('That is not a number. Use digits and a decimal point, e.g. .2627');return}
+      const a=val(e.a);if(e.pct&&v<=1&&a>1)v*=100;if(e.frac&&v>1)v/=100;
+      if(near(v,a,e.tol))right();else wrong(did?'Not quite. Check the decimals and which row of the output you read.':'Not quite. Do it in the lab first, then read the value from the output.')};
+    $('tCheck').addEventListener('click',chk);$('tAns').addEventListener('keydown',k=>{if(k.key==='Enter')chk()})}}
+function bindOpen(){const b=$('tOpen');if(b)b.addEventListener('click',()=>openDS(EX[act].ds))}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-ex]');if(!b)return;select(+b.dataset.ex);$('lab').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'})});
+
+/* ---------- boot ---------- */
+emptyOut();setTab('data',true);renderList();renderTask(true);
+})();
+</script>
+
 </html>
